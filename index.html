@@ -1,0 +1,2502 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="./support.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.13/lenis.min.js"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react/": "https://esm.sh/react@18.3.1/",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+    "scheduler": "https://esm.sh/scheduler@0.23.2",
+    "@paper-design/shaders": "https://esm.sh/@paper-design/shaders@0.0.61",
+    "@paper-design/shaders-react": "https://esm.sh/@paper-design/shaders-react@0.0.61?external=react,react-dom&deps=@paper-design/shaders@0.0.61",
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+
+<body>
+  <x-dc>
+    <helmet>
+      <link rel="stylesheet" href="_ds/drip-design-system-2125d627-698c-40ac-bbcb-63c4c7a5293f/tokens/colors.css">
+      <link rel="stylesheet" href="_ds/drip-design-system-2125d627-698c-40ac-bbcb-63c4c7a5293f/tokens/fonts.css">
+      <link rel="stylesheet" href="_ds/drip-design-system-2125d627-698c-40ac-bbcb-63c4c7a5293f/tokens/typography.css">
+      <link rel="stylesheet" href="_ds/drip-design-system-2125d627-698c-40ac-bbcb-63c4c7a5293f/tokens/spacing.css">
+      <link rel="stylesheet" href="_ds/drip-design-system-2125d627-698c-40ac-bbcb-63c4c7a5293f/styles.css">
+      <script src="_ds/drip-design-system-2125d627-698c-40ac-bbcb-63c4c7a5293f/_ds_bundle.js"></script>
+      <style>
+        :root {
+          --bg: #0E1018;
+          --surface: #141824;
+          --slate: #000000;
+          --cobalt: #0E1018;
+          --text: #E8DFC8;
+          --mist: #9A9088;
+          --accent: #A52700;
+          --ember: #EC5E27;
+          --secondary: #48C8FF;
+          --danger: #A52700;
+          --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        html {
+          scroll-behavior: smooth
+        }
+
+        body {
+          margin: 0;
+          overflow-x: hidden;
+          background: #0E1018;
+        }
+
+        a {
+          color: var(--secondary);
+          text-decoration: none;
+          transition: color 240ms var(--ease-editorial)
+        }
+
+        a:hover {
+          color: var(--accent)
+        }
+
+        ::selection {
+          background: var(--accent);
+          color: var(--text)
+        }
+
+        @keyframes drip-grain {
+
+          0%,
+          100% {
+            transform: translate(0, 0)
+          }
+
+          10% {
+            transform: translate(-4%, -4%)
+          }
+
+          30% {
+            transform: translate(3%, -2%)
+          }
+
+          50% {
+            transform: translate(-2%, 4%)
+          }
+
+          70% {
+            transform: translate(4%, 2%)
+          }
+
+          90% {
+            transform: translate(-3%, 3%)
+          }
+        }
+
+        @keyframes drip-marq {
+          from {
+            transform: translate3d(0, 0, 0)
+          }
+
+          to {
+            transform: translate3d(-50%, 0, 0)
+          }
+        }
+
+        @keyframes drip-marq-rev {
+          from {
+            transform: translate3d(-50%, 0, 0)
+          }
+
+          to {
+            transform: translate3d(0, 0, 0)
+          }
+        }
+
+        @keyframes drip-tick {
+          from {
+            transform: translate3d(0, 0, 0)
+          }
+
+          to {
+            transform: translate3d(-33.333%, 0, 0)
+          }
+        }
+
+        @keyframes drip-blink {
+
+          0%,
+          49% {
+            opacity: 1
+          }
+
+          50%,
+          100% {
+            opacity: 0
+          }
+        }
+
+        @keyframes drip-flow-in {
+          from {
+            opacity: 0;
+            transform: translate3d(0, 70px, 0);
+            filter: blur(6px)
+          }
+
+          to {
+            opacity: 1;
+            transform: none;
+            filter: none
+          }
+        }
+
+        @keyframes drip-veil-up {
+          from {
+            transform: scaleY(1)
+          }
+
+          to {
+            transform: scaleY(0)
+          }
+        }
+
+        @keyframes drip-veil-down {
+          from {
+            transform: scaleY(0);
+            transform-origin: bottom
+          }
+
+          to {
+            transform: scaleY(1);
+            transform-origin: bottom
+          }
+        }
+
+        @keyframes drip-faq-pop {
+          0%   { opacity: 0; transform: scale(1.12) translateY(24px); filter: blur(10px) saturate(1.15); clip-path: inset(50% 30% 50% 30%); }
+          55%  { opacity: 1; transform: scale(1.02) translateY(0);    filter: blur(1.5px) saturate(1.05); clip-path: inset(0 0 0 0); }
+          100% { opacity: 1; transform: scale(1) translateY(0);       filter: none; clip-path: inset(0 0 0 0); }
+        }
+        [data-faq-image-box] { isolation: isolate; }
+        [data-faq-img] { animation: drip-faq-pop 720ms var(--ease-editorial) both; }
+
+        @supports (animation-timeline: view()) {
+          [data-flow] {
+            animation: drip-flow-in linear both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 70%
+          }
+
+          [data-flow]>[data-veil] {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            pointer-events: none;
+            transform-origin: top;
+            animation: drip-veil-up linear both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 55%
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation: none !important
+          }
+        }
+
+        @property --drip-angle {
+          syntax: '<angle>';
+          initial-value: 0deg;
+          inherits: false;
+        }
+
+        @keyframes drip-conic-spin {
+          to {
+            --drip-angle: 360deg
+          }
+        }
+
+        @keyframes drip-conic-spin-rev {
+          to {
+            --drip-angle: -360deg
+          }
+        }
+
+        [data-drip-border] {
+          background: conic-gradient(from var(--drip-angle, 0deg), #A52700, #EC5E27, #4DA6E6, #A52700);
+          animation: drip-conic-spin 6s linear infinite;
+        }
+
+        [data-drip-bloom] {
+          background: conic-gradient(from var(--drip-angle, 0deg), #A52700, #EC5E27, #4DA6E6, #A52700);
+          animation: drip-conic-spin-rev 12s linear infinite;
+        }
+
+        @supports not (background:conic-gradient(from 0deg, red, blue)) {
+
+          [data-drip-border],
+          [data-drip-bloom] {
+            background: linear-gradient(120deg, #A52700, #EC5E27, #4DA6E6);
+          }
+        }
+
+        /* =========================================================
+         * HERO — metaballs shader background + kinetic type
+         * ========================================================= */
+        [data-hero-metaballs] {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+          display: block;
+          pointer-events: none;
+        }
+        [data-hero-copy] {
+          position: absolute;
+          z-index: 3;
+          left: clamp(24px, 6vw, 92px);
+          top: 50%;
+          transform: translateY(-50%);
+          max-width: min(62vw, 900px);
+          pointer-events: none;
+          text-align: left;
+          will-change: transform, opacity, filter;
+        }
+        [data-hero-copy] [data-hero-line] {
+          display: block;
+          font-family: var(--font-display), Impact, Bungee, sans-serif;
+          font-weight: 700;
+          font-size: clamp(44px, 8.2vw, 128px);
+          line-height: 0.94;
+          letter-spacing: 0.01em;
+          color: var(--text);
+          text-transform: uppercase;
+          margin: 0;
+          mix-blend-mode: screen;
+        }
+        [data-hero-copy] [data-hero-line]:nth-of-type(3) {
+          color: var(--ember);
+        }
+        [data-hero-copy] [data-hero-tag] {
+          display: inline-block;
+          margin-top: clamp(14px, 2vw, 28px);
+          font-family: var(--font-mono);
+          font-size: clamp(11px, 1vw, 13px);
+          letter-spacing: 0.34em;
+          text-transform: uppercase;
+          color: var(--mist);
+          padding-left: 14px;
+          border-left: 1px solid var(--ember);
+        }
+        [data-hero-copy] [data-hero-word] {
+          display: inline-block;
+          opacity: 0;
+          transform: translateY(50px);
+          filter: blur(10px);
+          transition: opacity 900ms var(--ease-editorial), transform 900ms var(--ease-editorial), filter 900ms var(--ease-editorial);
+        }
+        [data-hero-copy][data-hero-in="true"] [data-hero-word] {
+          opacity: 1;
+          transform: none;
+          filter: none;
+        }
+        [data-hero-red-veil] {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(120% 90% at 50% 100%, #A52700 0%, rgba(165, 39, 0, 0.6) 45%, rgba(165, 39, 0, 0) 78%);
+          opacity: 0;
+          z-index: 4;
+          pointer-events: none;
+          transition: opacity 500ms var(--ease-editorial);
+        }
+
+        [data-genre-card] {
+          position: relative;
+          background: var(--slate);
+          border: 1px solid rgba(232, 223, 200, 0.08);
+          overflow: hidden;
+          cursor: pointer;
+          transform-origin: center;
+          transition: transform 220ms var(--ease-editorial), border-color 220ms var(--ease-editorial), box-shadow 320ms var(--ease-editorial), z-index 0ms;
+          min-width: 0;
+          min-height: 0;
+        }
+
+        [data-genre-card] img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.7;
+          transition: opacity 220ms var(--ease-editorial), filter 220ms var(--ease-editorial);
+          filter: grayscale(0.15) contrast(1.02);
+          display: block;
+        }
+
+        [data-genre-card][data-state="big"] {
+          transform: scale(1.15) translate(-14px, -14px) translateZ(20px);
+          border-color: var(--accent);
+          box-shadow: 0 24px 60px rgba(165, 39, 0, 0.32), 0 0 0 1px var(--accent);
+          z-index: 20;
+        }
+
+        [data-genre-card][data-state="big"] img {
+          opacity: 1;
+          filter: grayscale(0) contrast(1.04) saturate(1.1);
+        }
+
+        [data-genre-card][data-state="small"] {
+          transform: scale(1.05) translate(-5px, -5px) translateZ(6px);
+          z-index: 10;
+          border-color: rgba(236, 94, 39, 0.4);
+        }
+
+        [data-genre-card][data-state="small"] img {
+          opacity: 0.9;
+        }
+
+        /* =========================================================
+         * WAITLIST CTA — rewarding color-play (all viewports)
+         * Glow sits BEHIND the button (z:-2); a ring sits AROUND it (z:-1)
+         * with a mask so it never paints over the button interior.
+         * ========================================================= */
+        [data-waitlist-cta] {
+          position: relative;
+          isolation: isolate;
+          border-radius: 6px;
+          transition: transform 300ms var(--ease-editorial);
+          width: fit-content;
+          align-self: flex-start;
+        }
+        [data-waitlist-cta] > * {
+          position: relative;
+          z-index: 1;
+        }
+        [data-waitlist-cta]::before {
+          content: '';
+          position: absolute;
+          inset: -14px;
+          border-radius: 16px;
+          background: conic-gradient(from 0deg, #A52700, #EC5E27, #48C8FF, #EC5E27, #A52700);
+          opacity: 0;
+          z-index: -2;
+          filter: blur(22px);
+          transition: opacity 500ms var(--ease-editorial), filter 500ms var(--ease-editorial);
+          animation: drip-conic-spin 4s linear infinite;
+          animation-play-state: paused;
+          pointer-events: none;
+        }
+        [data-waitlist-cta]::after {
+          content: '';
+          position: absolute;
+          inset: -2px;
+          border-radius: 8px;
+          padding: 2px;
+          background: linear-gradient(120deg, #A52700, #EC5E27, #48C8FF, #EC5E27, #A52700);
+          background-size: 300% 100%;
+          background-position: 0% 50%;
+          opacity: 0;
+          z-index: -1;
+          transition: opacity 400ms var(--ease-editorial), background-position 1200ms var(--ease-editorial);
+          pointer-events: none;
+          -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+          -webkit-mask-composite: xor;
+                  mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+                  mask-composite: exclude;
+        }
+        [data-waitlist-cta]:hover::before { opacity: 0.85; animation-play-state: running; }
+        [data-waitlist-cta]:hover::after { opacity: 1; background-position: 100% 50%; }
+        [data-waitlist-cta]:hover { transform: translateY(-2px); }
+        [data-waitlist-cta]:active { transform: translateY(0) scale(0.98); transition-duration: 100ms; }
+        [data-waitlist-cta]:active::before { opacity: 1; filter: blur(12px); animation: waitlist-burst 500ms ease-out; }
+        @keyframes waitlist-burst {
+          0%   { opacity: 0.85; filter: blur(14px); transform: scale(1); }
+          35%  { opacity: 1;    filter: blur(6px) brightness(1.35); transform: scale(1.06); }
+          100% { opacity: 0.85; filter: blur(14px); transform: scale(1); }
+        }
+
+        /* =========================================================
+         * ARCHITECTURAL RIGHT-ALIGNED PAGE MENU (Reference Exact Match)
+         * ========================================================= */
+        .drip-menu-pill {
+          position: fixed;
+          top: 24px;
+          right: 28px;
+          z-index: 1000;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 7px 20px;
+          background: #000000;
+          color: var(--text);
+          border: 1px solid rgba(232, 223, 200, 0.3);
+          border-radius: 999px;
+          font-family: var(--font-caption), -apple-system, sans-serif;
+          font-weight: 600;
+          font-size: 13px;
+          letter-spacing: 0.04em;
+          cursor: pointer;
+          transition: background 250ms ease, color 250ms ease, transform 150ms ease;
+          user-select: none;
+        }
+        .drip-menu-pill:hover {
+          background: var(--accent);
+          color: #ffffff;
+          transform: scale(1.04);
+        }
+        .drip-menu-pill:active {
+          transform: scale(0.96);
+        }
+
+        /* Menu Overlay Container - anchored to right side (does NOT take up the entire page) */
+        [data-menu-overlay] {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: clamp(520px, 48vw, 820px);
+          z-index: 950;
+          pointer-events: none;
+        }
+        [data-menu-overlay][data-menu-open="true"] {
+          pointer-events: auto;
+        }
+
+        @media (max-width: 900px) {
+          [data-menu-overlay] {
+            width: clamp(440px, 66vw, 660px);
+          }
+        }
+        @media (max-width: 680px) {
+          [data-menu-overlay] {
+            width: 100vw;
+          }
+        }
+
+        /* Top 3 Panels Wrap - 3 columns flush against top edge */
+        .drip-menu-top-wrap {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          display: flex;
+          align-items: flex-start;
+          pointer-events: none;
+        }
+
+        /* Individual Architectural Panels */
+        .drip-panel {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: clamp(16px, 1.8vw, 28px);
+          text-decoration: none;
+          color: #E8DFC8; /* DRIP Bone Cream typography */
+          box-sizing: border-box;
+          will-change: transform;
+          pointer-events: auto;
+          transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1), background-color 220ms ease;
+        }
+
+        /* Top Panel 1 - Left / Tallest (49vh) - DRIP Signature Crimson Red */
+        .drip-panel-1 {
+          width: 33.333%;
+          height: clamp(320px, 49vh, 480px);
+          background: #A52700;
+          border-right: 1px solid rgba(0, 0, 0, 0.28);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.28);
+          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+          transform: translate3d(0, -100%, 0);
+        }
+        .drip-panel-1:hover {
+          background: #B92D00 !important;
+        }
+
+        /* Top Panel 2 - Center / Medium (38vh) - DRIP Deep Cobalt Blue */
+        .drip-panel-2 {
+          width: 33.333%;
+          height: clamp(240px, 38vh, 370px);
+          background: #0E254C;
+          border-right: 1px solid rgba(0, 0, 0, 0.28);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.28);
+          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+          transform: translate3d(0, -100%, 0);
+        }
+        .drip-panel-2:hover {
+          background: #14356B !important;
+        }
+
+        /* Top Panel 3 - Right / Shortest (28vh) - DRIP Royal / Electric Blue Shade */
+        .drip-panel-3 {
+          width: 33.334%;
+          height: clamp(180px, 28vh, 280px);
+          background: #17437C;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.28);
+          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+          transform: translate3d(0, -100%, 0);
+        }
+        .drip-panel-3:hover {
+          background: #1F5396 !important;
+        }
+
+        /* Bottom Panel 4 - Flush to bottom edge, aligned with column 2 (Work) - DRIP Ember Red */
+        .drip-panel-bottom {
+          position: absolute;
+          bottom: 0;
+          left: 33.333%;
+          width: 33.333%;
+          height: clamp(65px, 9vh, 95px);
+          background: #D84512;
+          border-top: 1px solid rgba(0, 0, 0, 0.28);
+          border-left: 1px solid rgba(0, 0, 0, 0.28);
+          border-right: 1px solid rgba(0, 0, 0, 0.28);
+          padding: 14px 20px;
+          justify-content: flex-start;
+          box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.3);
+          transform: translate3d(0, 100%, 0);
+        }
+        .drip-panel-bottom:hover {
+          background: #EA4E18 !important;
+        }
+
+        /* Open States with Staggered Cascading Timing */
+        [data-menu-overlay][data-menu-open="true"] .drip-panel-1 {
+          transform: translate3d(0, 0, 0);
+          transition-delay: 0ms;
+        }
+        [data-menu-overlay][data-menu-open="true"] .drip-panel-2 {
+          transform: translate3d(0, 0, 0);
+          transition-delay: 60ms;
+        }
+        [data-menu-overlay][data-menu-open="true"] .drip-panel-3 {
+          transform: translate3d(0, 0, 0);
+          transition-delay: 120ms;
+        }
+        [data-menu-overlay][data-menu-open="true"] .drip-panel-bottom {
+          transform: translate3d(0, 0, 0);
+          transition-delay: 180ms;
+        }
+
+        /* Circled Number Badges */
+        .drip-badge-solid {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          background: #000000;
+          color: #E8DFC8;
+          font-family: var(--font-caption), -apple-system, sans-serif;
+          font-weight: 700;
+          font-size: 12px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+        }
+        .drip-badge-outline {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          border: 1.5px solid currentColor;
+          color: #E8DFC8;
+          font-family: var(--font-caption), -apple-system, sans-serif;
+          font-weight: 700;
+          font-size: 12px;
+        }
+        .drip-panel-2 .drip-badge-outline {
+          border-color: #48C8FF;
+          color: #48C8FF;
+        }
+        .drip-panel-3 .drip-badge-outline {
+          border-color: rgba(232, 223, 200, 0.7);
+          color: #E8DFC8;
+        }
+
+        /* Panel Titles matching reference image */
+        .drip-panel-title {
+          font-family: var(--font-caption), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          font-weight: 800;
+          font-size: clamp(20px, 2.4vw, 36px);
+          line-height: 1.05;
+          letter-spacing: -0.025em;
+          color: #E8DFC8;
+          margin: 0;
+          overflow-wrap: break-word;
+          word-break: normal;
+          transition: transform 220ms ease, color 220ms ease;
+        }
+        .drip-panel:hover .drip-panel-title {
+          transform: translateX(4px);
+          color: #FFFFFF;
+        }
+        .drip-panel-bottom .drip-panel-title {
+          font-size: clamp(12px, 1.2vw, 15px);
+          font-weight: 700;
+          letter-spacing: -0.01em;
+        }
+        .drip-panel-bottom:hover .drip-panel-title {
+          transform: translateY(-2px);
+          color: #FFFFFF;
+        }
+
+        @media (max-width: 680px) {
+          .drip-panel-1 {
+            height: 38vh;
+            padding: 16px 12px;
+          }
+          .drip-panel-2 {
+            height: 30vh;
+            padding: 16px 12px;
+          }
+          .drip-panel-3 {
+            height: 22vh;
+            padding: 16px 12px;
+          }
+          .drip-panel-bottom {
+            height: 55px;
+            padding: 10px 14px;
+          }
+          .drip-panel-title {
+            font-size: 19px;
+          }
+        }
+
+        /* =========================================================
+   * INTERACTIVE ELEMENT ANIMATIONS (links + buttons)
+   * ========================================================= */
+        a,
+        button,
+        [role="button"] {
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        a,
+        button {
+          transition:
+            color 320ms var(--ease-editorial),
+            background-color 320ms var(--ease-editorial),
+            transform 260ms var(--ease-editorial),
+            opacity 260ms var(--ease-editorial),
+            filter 320ms var(--ease-editorial),
+            box-shadow 340ms var(--ease-editorial),
+            letter-spacing 320ms var(--ease-editorial);
+          will-change: transform;
+        }
+
+        button {
+          cursor: pointer;
+        }
+
+        a:focus-visible,
+        button:focus-visible {
+          outline: 2px solid var(--accent);
+          outline-offset: 4px;
+          border-radius: 2px;
+        }
+
+        a:active,
+        button:active {
+          transform: scale(0.96);
+          transition-duration: 90ms;
+        }
+
+        /* Nav wordmark: color + micro-tilt */
+        nav a[href="#hero"] {
+          display: inline-block;
+        }
+
+        nav a[href="#hero"]:hover {
+          color: var(--accent);
+          transform: rotate(-3deg) scale(1.04);
+        }
+
+        /* Nav text links: underline slide + accent color + breath */
+        nav a[href="#what"],
+        nav a[href="#genres"],
+        nav a[href="#features"] {
+          position: relative;
+        }
+
+        nav a[href="#what"]::after,
+        nav a[href="#genres"]::after,
+        nav a[href="#features"]::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -8px;
+          height: 1px;
+          background: var(--accent);
+          transform: scaleX(0);
+          transform-origin: left center;
+          transition: transform 420ms var(--ease-editorial);
+          pointer-events: none;
+        }
+
+        nav a[href="#what"]:hover::after,
+        nav a[href="#genres"]:hover::after,
+        nav a[href="#features"]:hover::after {
+          transform: scaleX(1);
+        }
+
+        nav a[href="#what"]:hover,
+        nav a[href="#genres"]:hover,
+        nav a[href="#features"]:hover {
+          color: var(--accent);
+          letter-spacing: 0.18em;
+        }
+
+        /* Nav CTA pill (Pull Up): lift + shadow */
+        nav a[href="#pull"] {
+          position: relative;
+          overflow: hidden;
+        }
+
+        nav a[href="#pull"]:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 14px 34px rgba(165, 39, 0, 0.5);
+          letter-spacing: 0.22em;
+        }
+
+        nav a[href="#pull"]:active {
+          transform: translateY(-1px) scale(0.97);
+          box-shadow: 0 4px 12px rgba(165, 39, 0, 0.32);
+        }
+
+        /* Hero SCROLL indicator */
+        #hero a[href="#what"] {
+          transition: color 320ms var(--ease-editorial), letter-spacing 320ms var(--ease-editorial);
+        }
+
+        #hero a[href="#what"]>span {
+          transition: width 380ms var(--ease-editorial), background 320ms var(--ease-editorial);
+        }
+
+        #hero a[href="#what"]:hover {
+          color: var(--accent);
+          letter-spacing: 0.36em;
+        }
+
+        #hero a[href="#what"]:hover>span {
+          background: var(--accent);
+          width: 60px !important;
+        }
+
+        /* FAQ toggle buttons — subtle right-slide + brightness on the row */
+        button:hover {
+          transform: translateX(6px);
+          filter: brightness(1.02);
+        }
+
+        button:active {
+          transform: translateX(2px) scale(0.98);
+        }
+
+        /* Footer social links (on red bg, keep color, slide + underline) */
+        footer a {
+          position: relative;
+          display: inline-block;
+        }
+
+        footer a::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -3px;
+          width: 100%;
+          height: 2px;
+          background: currentColor;
+          transform: scaleX(0);
+          transform-origin: left center;
+          transition: transform 380ms var(--ease-editorial);
+          pointer-events: none;
+        }
+
+        footer a:hover {
+          color: var(--text) !important;
+          transform: translateX(6px);
+          letter-spacing: 0.18em;
+        }
+
+        footer a:hover::after {
+          transform: scaleX(1);
+        }
+
+        /* App-store badge in waitlist column (hover lift) */
+        section img[alt*="Google Play"],
+        section img[alt*="App Store"] {
+          transition: transform 280ms var(--ease-editorial), filter 280ms var(--ease-editorial);
+          cursor: pointer;
+        }
+
+        section img[alt*="Google Play"]:hover,
+        section img[alt*="App Store"]:hover {
+          transform: translateY(-3px);
+          filter: brightness(1.08);
+        }
+
+        /* Kill the tactile transforms under reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+
+          a,
+          button,
+          a:hover,
+          button:hover,
+          a:active,
+          button:active,
+          footer a:hover,
+          nav a:hover {
+            transform: none !important;
+            letter-spacing: inherit !important;
+          }
+        }
+
+        /* =========================================================
+         * MOBILE — IMPORTANT: do NOT touch [data-hero-shader-mount].
+         * The shader library sizes the WebGL canvas from that div's
+         * bounding rect (ResizeObserver). Changing its inset in a
+         * media query shrinks the border ring proportionally until
+         * it visually disappears. All other hero pieces are safe to
+         * restyle.
+         * ========================================================= */
+        @media (max-width: 1024px) {
+          nav > div[style*="gap:clamp"] { gap: 20px !important; }
+          section#genres { height: auto !important; min-height: 100vh !important; }
+          [data-genre-grid] > div {
+            grid-template-columns: repeat(4, minmax(0,1fr)) !important;
+            grid-template-rows: repeat(4, minmax(0,1fr)) !important;
+          }
+          [data-fan] { flex-wrap: wrap !important; }
+          [data-feature] { flex-basis: 46% !important; min-height: 340px; }
+        }
+
+        @media (max-width: 640px) {
+          /* NAV */
+          nav[style*="position:fixed"] { padding: 12px 16px !important; }
+          nav a[href="#what"], nav a[href="#genres"], nav a[href="#features"] { display: none !important; }
+          nav > div[style*="gap:clamp"] { gap: 0 !important; }
+          nav a[href="#hero"] { font-size: 22px !important; }
+          nav a[href="#pull"] { padding: 8px 14px !important; font-size: 10px !important; letter-spacing: 0.12em !important; }
+
+          /* HERO — text/padding only. Shader mount untouched. */
+          [data-hero-frame] {
+            padding: 44px 26px !important;
+            border-radius: 12px !important;
+            max-width: min(92vw, 520px) !important;
+          }
+          [data-hero-frame] > div[style*="flex-direction:column"] { gap: 10px !important; }
+          [data-hero-frame] > div[style*="flex-direction:column"] span {
+            font-size: 12px !important;
+            letter-spacing: 0.1em !important;
+            line-height: 1.2 !important;
+          }
+          #hero div[style*="writing-mode:vertical-rl"] {
+            font-size: 9px !important;
+            padding: 12px 5px !important;
+            letter-spacing: 0.2em !important;
+          }
+          [data-hero-dots] { display: none !important; }
+          #hero a[style*="bottom:26px"] {
+            font-size: 10px !important;
+            letter-spacing: 0.24em !important;
+          }
+          #hero a[style*="bottom:26px"] > span { width: 22px !important; }
+
+          /* STATEMENT (manifesto) */
+          section[style*="background:var(--accent)"][style*="sticky"] { padding: 8vh 22px !important; }
+
+          /* WHAT ARE WE — stack */
+          section#what { grid-template-columns: 1fr !important; min-height: auto !important; }
+          section#what > div:first-of-type {
+            padding: 10vh 22px 6vh !important;
+            border-right: none !important;
+            border-bottom: 1px solid var(--slate) !important;
+          }
+          section#what > div:last-of-type { padding: 6vh 22px 10vh !important; }
+          section#what h2 { font-size: clamp(26px, 7vw, 40px) !important; }
+          section#what p { font-size: clamp(15px, 4vw, 18px) !important; }
+
+          /* GENRES — 3x5 */
+          section#genres {
+            height: auto !important;
+            min-height: 100vh !important;
+            padding: 60px 16px 40px !important;
+          }
+          section#genres h2 { font-size: clamp(22px, 6.5vw, 32px) !important; max-width: none !important; }
+          [data-genre-grid] > div {
+            grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+            grid-template-rows: repeat(5, minmax(96px,1fr)) !important;
+            gap: 6px !important;
+          }
+
+          /* FEATURES — vertical accordion, click a card to expand it */
+          section#features { padding: 8vh 16px !important; }
+          section#features h2 { font-size: clamp(24px, 6.5vw, 36px) !important; }
+          [data-fan] {
+            flex-direction: column !important;
+            flex-wrap: nowrap !important;
+            gap: 10px !important;
+            max-width: 100% !important;
+          }
+          [data-feature] {
+            flex: 0 0 auto !important;
+            height: 72px !important;
+            min-height: 0 !important;
+            transition: height 550ms var(--ease-editorial), border-color 300ms var(--ease-editorial) !important;
+            overflow: hidden !important;
+            border-radius: 6px !important;
+          }
+          [data-feature][data-active="true"] {
+            height: 540px !important;
+          }
+          /* Inactive card: fade the image, show the name horizontally, keep the number badge */
+          [data-feature]:not([data-active="true"]) > div:first-of-type {
+            opacity: 0.22 !important;
+            filter: blur(1px) !important;
+            transition: opacity 400ms var(--ease-editorial), filter 400ms var(--ease-editorial) !important;
+          }
+          [data-feature]:not([data-active="true"]) > div[style*="writing-mode:vertical-rl"] {
+            writing-mode: horizontal-tb !important;
+            left: 52px !important;
+            right: auto !important;
+            top: 50% !important;
+            bottom: auto !important;
+            transform: translateY(-50%) !important;
+            font-size: 15px !important;
+            opacity: 1 !important;
+            letter-spacing: 0.16em !important;
+          }
+          /* Number badge stays top-left, becomes vertically centered on the spine row */
+          [data-feature]:not([data-active="true"]) > div[style*="top:14px;left:14px"] {
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+          }
+          /* Active card: phone image centered nicely for mobile */
+          [data-feature][data-active="true"] > div:first-of-type {
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%,-50%) !important;
+            width: 62% !important;
+            height: 78% !important;
+            max-height: 440px !important;
+            border: 5px solid var(--bg) !important;
+            box-shadow: 0 20px 50px -15px rgba(0,0,0,0.6) !important;
+          }
+
+          /* QUESTIONS — stack + drop the reference image entirely */
+          section#questions { grid-template-columns: 1fr !important; }
+          section#questions > div:first-of-type {
+            padding: 8vh 22px 2vh !important;
+            border-right: none !important;
+          }
+          section#questions > div:first-of-type > div:last-of-type {
+            display: none !important;
+          }
+          section#questions > div:last-of-type { padding: 4vh 22px 8vh !important; }
+          section#questions h2 { font-size: clamp(36px, 10vw, 60px) !important; }
+
+          /* PULL UP — stack */
+          section#pull { grid-template-columns: 1fr !important; min-height: auto !important; }
+          section#pull > div:first-of-type { padding: 10vh 22px 6vh !important; }
+          section#pull > div:last-of-type {
+            padding: 6vh 22px 10vh !important;
+            border-left: none !important;
+            border-top: none !important;
+          }
+
+          /* FOOTER — stack */
+          footer > div[style*="clamp(16px,2vw,32px)"] { padding: 40px 22px 20px !important; }
+          footer > div > div[style*="grid-template-columns"] {
+            grid-template-columns: 1fr !important;
+            gap: 36px !important;
+            align-items: start !important;
+          }
+          footer div[onClick] {
+            position: relative !important;
+            right: auto !important;
+            bottom: auto !important;
+            font-size: clamp(80px, 22vw, 160px) !important;
+          }
+          footer div[style*="min-height:clamp(170px"] { min-height: auto !important; }
+
+          /* Image trail — smaller ghosts */
+          [data-image-trail] [data-trail-img] { width: 110px !important; height: 148px !important; }
+        }
+      </style>
+    </helmet>
+    <div ref="{{ setRoot }}"
+      style="position:relative;background:var(--bg);color:var(--text);font-family:var(--font-body);overflow:hidden;">
+
+      <!-- FILM GRAIN -->
+      <div aria-hidden="true"
+        style="position:fixed;inset:-120px;z-index:9998;pointer-events:none;opacity:0.05;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);animation:drip-grain 1.2s steps(2) infinite;">
+      </div>
+
+      <!-- LOADER (kinetic text grid · red countdown) -->
+      <div style="{{ loaderStyle }}" data-loader>
+        <div
+          style="position:fixed;inset:0;z-index:9999;background:#000;overflow:hidden;transition:opacity 800ms var(--ease-editorial);">
+          <!-- Kinetic text grid (built by JS) -->
+          <div data-kinetic-grid aria-hidden="true"
+            style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:clamp(4px,1.3vh,20px);pointer-events:none;overflow:hidden;transform-origin:50% 50%;will-change:transform;">
+          </div>
+          <!-- Top mono strip -->
+          <div
+            style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:clamp(20px,4vw,44px);font-family:var(--font-mono);font-size:11px;letter-spacing:0.22em;color:var(--mist);text-transform:uppercase;z-index:2;">
+            <span>DRIP&deg; / FASHION OS</span>
+            <span style="color:var(--secondary);">BOOT SEQUENCE</span>
+          </div>
+          <!-- Bottom-right micro-copy -->
+          <div
+            style="position:absolute;bottom:clamp(20px,4vw,44px);right:clamp(20px,4vw,44px);font-family:var(--font-mono);font-size:10px;letter-spacing:0.22em;color:var(--mist);text-transform:uppercase;z-index:2;text-align:right;line-height:1.55;">
+            <div>EST 2077</div>
+            <div>FOR THE VIBE</div>
+          </div>
+          <!-- Bottom-left huge red countdown -->
+          <div
+            style="position:absolute;bottom:clamp(16px,3vw,40px);left:clamp(20px,4vw,44px);z-index:2;line-height:0.85;">
+            <div style="display:flex;align-items:flex-end;gap:clamp(6px,1vw,14px);color:var(--accent);">
+              <div
+                style="font-family:var(--font-wordmark);font-size:clamp(90px,15vw,220px);letter-spacing:-0.02em;line-height:0.85;">
+                {{ loadNum }}</div>
+              <div
+                style="font-family:var(--font-mono);font-size:clamp(18px,2vw,30px);padding-bottom:clamp(12px,1.8vw,24px);letter-spacing:0.02em;">
+                %</div>
+            </div>
+            <div
+              style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.3em;color:var(--accent);text-transform:uppercase;margin-top:clamp(4px,0.6vw,10px);">
+              Loading</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOP-RIGHT MENU PILL BUTTON -->
+      <button data-menu-toggle aria-expanded="false" aria-label="Toggle Navigation Menu" class="drip-menu-pill">
+        <span data-menu-label>Menu</span>
+      </button>
+
+      <!-- ARCHITECTURAL BACKED-IN PAGE PANELS (3 TOP + 1 BOTTOM) -->
+      <div data-menu-overlay aria-hidden="true">
+        <div class="drip-menu-top-wrap">
+          <a href="#what" data-menu-link class="drip-panel drip-panel-1">
+            <span class="drip-badge-solid">1</span>
+            <span class="drip-panel-title">Manifesto</span>
+          </a>
+          <a href="#genres" data-menu-link class="drip-panel drip-panel-2">
+            <span class="drip-badge-outline">2</span>
+            <span class="drip-panel-title">Genres</span>
+          </a>
+          <a href="#features" data-menu-link class="drip-panel drip-panel-3">
+            <span class="drip-badge-outline">3</span>
+            <span class="drip-panel-title">Features</span>
+          </a>
+        </div>
+        <a href="#pull" data-menu-link class="drip-panel drip-panel-bottom">
+          <span class="drip-panel-title">Waitlist</span>
+        </a>
+      </div>
+
+      <!-- FRAME 1 — HERO (metaballs shader background · kinetic type) -->
+      <section id="hero" data-hero
+        style="position:relative;height:100vh;min-height:600px;overflow:hidden;background:var(--cobalt);will-change:transform,opacity;perspective:1400px;perspective-origin:50% 50%;">
+        <!-- METABALLS SHADER BACKGROUND (Paper Shaders WebGL1) -->
+        <canvas data-hero-metaballs aria-hidden="true"
+          style="position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none;"></canvas>
+
+        <!-- 2) LEFT-OFFSET KINETIC HEADLINE — "FASHION IS EVERYWHERE. TASTE ISN'T." -->
+        <div data-hero-copy data-hero-in="false">
+          <span data-hero-line><span data-hero-word style="transition-delay:60ms;">FASHION</span>&nbsp;<span data-hero-word style="transition-delay:180ms;">IS</span></span>
+          <span data-hero-line><span data-hero-word style="transition-delay:300ms;">EVERYWHERE.</span></span>
+          <span data-hero-line><span data-hero-word style="transition-delay:520ms;">TASTE</span>&nbsp;<span data-hero-word style="transition-delay:660ms;">ISN'T.</span></span>
+          <span data-hero-tag><span data-hero-word style="transition-delay:900ms;">Drip&deg; · Estd 2077 · For the vibe</span></span>
+        </div>
+
+        <!-- 3) RED VEIL — bleeds up as user scrolls, blending to the manifesto -->
+        <div aria-hidden="true" data-hero-red-veil></div>
+
+        <div
+          style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:var(--ember);color:var(--bg);writing-mode:vertical-rl;font-family:var(--font-caption);font-weight:600;font-size:12px;letter-spacing:0.26em;text-transform:uppercase;padding:20px 8px;z-index:5;">
+          Beta</div>
+        <a href="#what"
+          style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:5;font-family:var(--font-mono);font-size:11px;letter-spacing:0.3em;color:var(--text);display:flex;align-items:center;gap:10px;text-transform:uppercase;">SCROLL
+          <span style="display:inline-block;width:34px;height:1px;background:var(--text);"></span></a>
+      </section>
+
+      <!-- TICKER BAND -->
+      <div aria-hidden="true"
+        style="position:relative;z-index:6;background:var(--accent);color:var(--bg);overflow:hidden;border-top:1px solid var(--bg);border-bottom:1px solid var(--bg);">
+        <div
+          style="display:flex;width:max-content;animation:drip-tick 26s linear infinite;font-family:var(--font-display);font-size:clamp(16px,2.4vw,26px);letter-spacing:0.14em;text-transform:uppercase;padding:14px 0;">
+          <sc-for list="{{ tickerA }}" as="t" hint-placeholder-count="9"><span style="padding:0 28px;">{{ t
+              }}</span></sc-for>
+        </div>
+      </div>
+
+      <!-- FRAME 2 — STATEMENT (sticky full-bleed red wipe) -->
+      <section
+        style="position:sticky;top:0;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;background:var(--accent);color:var(--text);z-index:1;overflow:hidden;padding:12vh clamp(20px,6vw,120px);gap:clamp(28px,5vh,72px);">
+        <div
+          style="position:absolute;top:clamp(20px,5vw,56px);left:clamp(20px,6vw,120px);right:clamp(20px,6vw,120px);display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;letter-spacing:0.24em;text-transform:uppercase;opacity:0.75;color:var(--text);">
+          <span>MANIFESTO</span><span>001 / 002</span>
+        </div>
+        <p
+          style="position:relative;z-index:2;max-width:1300px;margin:0;font-family:var(--font-display);font-size:clamp(34px,8vw,120px);line-height:1.02;letter-spacing:0.005em;text-transform:uppercase;color:var(--text);text-wrap:balance;">
+          <sc-for list="{{ transitionWords }}" as="w" hint-placeholder-count="8">
+            <span data-reveal data-delay="{{ w.delay }}" style="{{ w.style }}">{{ w.text }}</span>
+          </sc-for>
+        </p>
+        <div data-reveal data-delay="900"
+          style="position:relative;z-index:2;display:flex;align-items:center;gap:20px;font-family:var(--font-mono);font-size:clamp(12px,1.2vw,15px);letter-spacing:0.34em;text-transform:uppercase;color:var(--slate);opacity:0;transform:translateY(24px);transition:opacity 900ms var(--ease-editorial),transform 900ms var(--ease-editorial);">
+          <span style="display:inline-block;width:clamp(36px,4vw,72px);height:1px;background:var(--slate);"></span>
+          <span>The Fashion Social Network.</span>
+        </div>
+      </section>
+
+      <!-- FRAME 3 — WHAT ARE WE (full split) -->
+      <section id="what" data-flow
+        style="position:relative;z-index:2;min-height:100vh;background:var(--bg);display:grid;grid-template-columns:1.15fr 1fr;overflow:hidden;">
+        <div aria-hidden="true" data-veil
+          style="background:var(--cobalt);position:absolute;inset:0;z-index:20;pointer-events:none;transform:scaleY(0);">
+        </div>
+        <div
+          style="display:flex;flex-direction:column;justify-content:center;padding:14vh clamp(20px,4vw,72px) 14vh clamp(20px,6vw,110px);border-right:1px solid var(--slate);">
+          <div data-reveal
+            style="font-family:var(--font-mono);font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ember);margin-bottom:28px;opacity:0;transform:translateX(-40px);transition:opacity 900ms var(--ease-editorial),transform 900ms var(--ease-editorial);">
+            02 — What are we</div>
+          <h2 data-reveal
+            style="font-family:var(--font-display);font-weight:800;font-size:clamp(32px,5.4vw,84px);line-height:1.0;letter-spacing:-0.005em;text-transform:uppercase;color:var(--text);margin:0;text-wrap:balance;opacity:0;transform:translateX(-50px);transition:opacity 1100ms var(--ease-editorial),transform 1100ms var(--ease-editorial);">
+            We don't sell clothes.<br /><span style="color:var(--ember);">We sell dressing sense.</span></h2>
+          <p data-reveal data-delay="220"
+            style="margin:22px 0 0;font-family:var(--font-body-lg);font-weight:500;font-size:clamp(15px,1.4vw,19px);line-height:1.5;color:var(--mist);max-width:44ch;opacity:0;transform:translateY(24px);transition:opacity 1000ms var(--ease-editorial),transform 1000ms var(--ease-editorial);">
+            Where fashion taste becomes <span style="color:var(--text);">social identity</span>.</p>
+        </div>
+        <div
+          style="display:flex;flex-direction:column;justify-content:center;padding:14vh clamp(20px,5vw,80px);background:var(--slate);">
+          <p data-reveal data-delay="140"
+            style="margin:0;font-family:var(--font-body-lg);font-weight:500;font-size:clamp(16px,1.6vw,22px);line-height:1.55;color:var(--text);opacity:0;transform:translateY(30px);transition:opacity 1000ms var(--ease-editorial),transform 1000ms var(--ease-editorial);">
+            Instagram is your life. Spotify is your sound. Drip is your <em
+              style="font-style:normal;color:var(--secondary);">fit</em>. Discover outfits, follow people by their
+            style, post your OOTDs, build a wardrobe, create fits, and get AI styling from Taylor.</p>
+          <div data-reveal data-delay="300"
+            style="display:grid;grid-template-columns:1fr 1fr;margin-top:48px;border-top:1px solid var(--mist);border-left:1px solid var(--mist);opacity:0;transform:translateY(24px);transition:opacity 1000ms var(--ease-editorial),transform 1000ms var(--ease-editorial);">
+            <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="4">
+              <div style="border-right:1px solid var(--mist);border-bottom:1px solid var(--mist);padding:20px 18px;">
+                <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);">{{ p.n }}</div>
+                <div
+                  style="font-family:var(--font-display);font-size:clamp(13px,1.3vw,16px);letter-spacing:0.06em;text-transform:uppercase;color:var(--text);margin-top:12px;">
+                  {{ p.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <!-- FRAME 4 — GENRES (5×3 grid, all 15 in one viewport frame) -->
+      <section id="genres" data-flow
+        style="position:relative;z-index:3;height:100vh;min-height:600px;display:grid;grid-template-rows:auto 1fr;overflow:hidden;background:var(--bg);padding:clamp(48px,7vh,88px) clamp(20px,5vw,56px) clamp(32px,5vh,64px);gap:clamp(20px,3vh,36px);">
+        <div aria-hidden="true" data-veil
+          style="background:var(--slate);position:absolute;inset:0;z-index:20;pointer-events:none;transform:scaleY(0);">
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:16px;">
+          <h2 data-reveal
+            style="font-family:var(--font-display);font-size:clamp(22px,3.6vw,52px);line-height:1;letter-spacing:0.02em;text-transform:uppercase;color:var(--text);margin:0;text-wrap:balance;max-width:14ch;opacity:0;transform:translateX(-40px);transition:opacity 1000ms var(--ease-editorial),transform 1000ms var(--ease-editorial);">
+            Discover the <span style="color:var(--accent);">multiple</span> genres</h2>
+        </div>
+        <div data-genre-grid style="perspective:1400px;min-height:0;">
+          <div
+            style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:clamp(8px,1vw,14px);width:100%;height:100%;transform-style:preserve-3d;">
+            <sc-for list="{{ genreCards }}" as="g" hint-placeholder-count="15">
+              <div data-genre-card data-i="{{ g.i }}">
+                <img src="{{ g.img }}" alt="{{ g.label }}" loading="lazy" />
+                <div
+                  style="position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(14,16,24,0) 0%,rgba(14,16,24,0.75) 60%,rgba(14,16,24,0.95) 100%);padding:22px 12px 10px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;">
+                  <span
+                    style="font-family:var(--font-display);font-size:clamp(10px,0.95vw,14px);letter-spacing:0.14em;text-transform:uppercase;color:var(--text);line-height:1.1;">{{
+                    g.label }}</span>
+                  <span
+                    style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;color:var(--accent);opacity:0.85;">{{
+                    g.code }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <!-- FRAME 5 — FEATURES (cobalt full-bleed) — no veil (no transition from genres) -->
+      <section id="features"
+        style="position:relative;z-index:4;min-height:100vh;overflow:hidden;padding:12vh clamp(20px,4vw,64px);background:var(--cobalt);">
+        <div
+          style="display:flex;justify-content:space-between;align-items:end;max-width:1400px;margin:0 auto 5vh;flex-wrap:wrap;gap:16px;">
+          <div>
+            <div data-reveal
+              style="font-family:var(--font-mono);font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--secondary);margin-bottom:18px;opacity:0;transform:translateY(20px);transition:opacity 900ms var(--ease-editorial),transform 900ms var(--ease-editorial);">
+              04 — The beta experience</div>
+            <h2 data-reveal
+              style="font-family:var(--font-display);font-size:clamp(28px,5vw,72px);line-height:1.02;letter-spacing:0.02em;text-transform:uppercase;color:var(--text);margin:0;text-wrap:balance;opacity:0;transform:translateX(-46px);transition:opacity 1100ms var(--ease-editorial),transform 1100ms var(--ease-editorial);">
+              Five ways to <span style="color:var(--accent);">wear</span> the app</h2>
+          </div>
+        </div>
+        <div data-fan
+          style="display:flex;flex-wrap:nowrap;align-items:stretch;justify-content:center;gap:clamp(8px,1vw,16px);max-width:1440px;margin:0 auto;">
+          <sc-for list="{{ features }}" as="f" hint-placeholder-count="5">
+            <div data-feature="{{ f.i }}" data-active="{{ f.active }}" onClick="{{ f.onActivate }}" onMouseEnter="{{ f.onActivate }}"
+              style="{{ f.wrapStyle }}">
+              <div style="{{ f.phoneStyle }}">
+                <img src="{{ f.img }}" alt="{{ f.name }}" loading="lazy"
+                  style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+                <div
+                  style="position:absolute;top:8px;left:50%;transform:translateX(-50%);width:34%;height:5px;border-radius:4px;background:rgba(232,223,200,0.4);">
+                </div>
+              </div>
+              <div
+                style="position:absolute;top:14px;left:14px;font-family:var(--font-mono);font-size:12px;color:var(--accent);z-index:2;">
+                0{{ f.n }}</div>
+              <div style="{{ f.contentStyle }}">
+                <div style="background:var(--bg);padding:16px 18px;">
+                  <div
+                    style="font-family:var(--font-display);font-size:clamp(18px,1.9vw,25px);letter-spacing:0.08em;text-transform:uppercase;color:var(--text);line-height:1.05;">
+                    {{ f.name }}</div>
+                  <div
+                    style="font-family:var(--font-body);font-size:14px;line-height:1.45;color:var(--mist);margin-top:10px;max-width:320px;">
+                    {{ f.desc }}</div>
+                  <div
+                    style="margin-top:14px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;color:var(--secondary);">
+                    {{ f.tagline }}</div>
+                </div>
+              </div>
+              <div style="{{ f.spineStyle }}">{{ f.name }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- FRAME 6 — QUESTIONS (cream full-bleed, ink text) — bg fades to #E8DFC8 -->
+      <section id="questions" data-flow
+        style="position:relative;z-index:5;background:#E8DFC8;color:var(--bg);display:grid;grid-template-columns:0.85fr 1.15fr;min-height:100vh;overflow:hidden;">
+        <div aria-hidden="true" data-veil
+          style="background:#E8DFC8;position:absolute;inset:0;z-index:20;pointer-events:none;transform:scaleY(0);">
+        </div>
+        <div
+          style="padding:14vh clamp(20px,4vw,64px) 14vh clamp(20px,6vw,110px);border-right:1px solid rgba(14,16,24,0.16);display:flex;flex-direction:column;">
+          <div>
+            <div data-reveal
+              style="font-family:var(--font-mono);font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:24px;opacity:0;transform:translateY(20px);transition:opacity 900ms var(--ease-editorial),transform 900ms var(--ease-editorial);">
+              05 — FAQ</div>
+            <h2 data-reveal
+              style="font-family:var(--font-display);font-size:clamp(34px,5vw,84px);line-height:0.98;letter-spacing:0.01em;text-transform:uppercase;color:var(--bg);margin:0;opacity:0;transform:translateX(-40px);transition:opacity 1100ms var(--ease-editorial),transform 1100ms var(--ease-editorial);">
+              Questions?</h2>
+          </div>
+          <div data-faq-image-box
+            style="margin-top:clamp(28px,4vh,56px);position:relative;flex:1;min-height:min(70vh,640px);overflow:hidden;border:1px solid rgba(14,16,24,0.22);background:rgba(14,16,24,0.05);">
+            <img data-faq-img src="{{ faqImage }}" alt="{{ faqImageLabel }}"
+              style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center center;" />
+            <div
+              style="position:absolute;left:0;bottom:0;background:var(--bg);color:var(--text);font-family:var(--font-mono);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;padding:8px 12px;z-index:2;">
+              {{ faqImageLabel }}</div>
+          </div>
+        </div>
+        <div style="padding:12vh clamp(20px,5vw,80px);display:flex;flex-direction:column;justify-content:center;">
+          <div style="border-top:1px solid rgba(14,16,24,0.22);">
+            <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="6">
+              <div data-reveal
+                style="border-bottom:1px solid rgba(14,16,24,0.22);opacity:0;transform:translateY(16px);transition:opacity 800ms var(--ease-editorial),transform 800ms var(--ease-editorial);">
+                <button onClick="{{ q.onToggle }}"
+                  style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:26px 0;background:transparent;border:none;cursor:pointer;text-align:left;">
+                  <span style="display:flex;gap:16px;align-items:baseline;"><span
+                      style="font-family:var(--font-mono);font-size:12px;color:var(--accent);">{{ q.n }}</span><span
+                      style="font-family:var(--font-display);font-size:clamp(15px,2vw,24px);letter-spacing:0.01em;text-transform:uppercase;color:var(--bg);">{{
+                      q.q }}</span></span>
+                  <span style="{{ q.iconStyle }}">+</span>
+                </button>
+                <div style="{{ q.answerStyle }}">
+                  <p
+                    style="margin:0;padding:0 0 28px clamp(28px,3vw,44px);font-family:var(--font-body-lg);font-weight:500;font-size:clamp(15px,1.5vw,18px);line-height:1.55;color:#3a3a34;max-width:640px;">
+                    {{ q.a }}</p>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <!-- FRAME 7 — PULL UP (ink split) — bg fades to #000000 -->
+      <section id="pull" data-flow
+        style="position:relative;z-index:6;min-height:100vh;background:#000000;display:grid;grid-template-columns:1.1fr 1fr;overflow:hidden;">
+        <div aria-hidden="true" data-veil
+          style="background:#000000;position:absolute;inset:0;z-index:20;pointer-events:none;transform:scaleY(0);">
+        </div>
+        <div
+          style="display:flex;flex-direction:column;justify-content:center;padding:14vh clamp(20px,4vw,72px) 14vh clamp(20px,6vw,110px);position:relative;">
+          <div data-reveal
+            style="font-family:var(--font-caption);font-weight:600;font-size:12px;letter-spacing:0.4em;text-transform:uppercase;color:var(--secondary);margin-bottom:12px;opacity:0;transform:translateY(20px);transition:opacity 900ms var(--ease-editorial),transform 900ms var(--ease-editorial);">
+            06 — Drops soon</div>
+          <h2 data-reveal
+            style="font-family:var(--font-alt);font-size:clamp(56px,10vw,150px);line-height:0.92;letter-spacing:0.01em;text-transform:uppercase;color:var(--text);margin:0;opacity:0;transform:translateX(-50px);transition:opacity 1100ms var(--ease-editorial),transform 1100ms var(--ease-editorial);">
+            Pull up!</h2>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:36px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div
+                style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;color:var(--mist);text-transform:uppercase;">
+                Coming soon</div>
+              <div style="width:170px;height:52px;display:flex;align-items:center;justify-content:center;">
+                <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                  alt="Download on the App Store"
+                  style="width:100%;height:100%;object-fit:contain;object-position:left center;display:block;" />
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div
+                style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;color:var(--mist);text-transform:uppercase;">
+                Coming soon</div>
+              <div style="width:170px;height:52px;display:flex;align-items:center;justify-content:center;">
+                <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                  alt="Get it on Google Play"
+                  style="width:100%;height:100%;object-fit:contain;object-position:left center;display:block;" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          style="display:flex;flex-direction:column;justify-content:center;padding:14vh clamp(20px,5vw,80px);background:#000000;">
+          <p
+            style="font-family:var(--font-body-lg);font-weight:500;font-size:clamp(16px,1.7vw,20px);color:var(--text);margin:0 0 32px;max-width:420px;">
+            Be first through the door — get the pull-up text the moment Drip is live on the App Store &amp; Google Play.
+          </p>
+          <form onSubmit="{{ onEmailSubmit }}" style="display:flex;flex-direction:column;gap:18px;">
+            <label
+              style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:var(--mist);">Email
+              address</label>
+            <input type="email" value="{{ email }}" onInput="{{ onEmailChange }}" placeholder="your@school.edu"
+              style="background:#000000;border:1px solid var(--mist);color:var(--text);font-family:var(--font-body);font-size:16px;padding:16px;outline:none;" />
+            <div data-waitlist-cta>
+              <x-import component-from-global-scope="DripDesignSystem_2125d6.Button"
+                from="_ds/drip-design-system-2125d627-698c-40ac-bbcb-63c4c7a5293f/_ds_bundle.js" variant="primary"
+                size="lg" type="submit" hint-size="auto,56px">Join The Waitlist</x-import>
+            </div>
+            <div style="{{ emailMsgStyle }}">{{ emailMsg }}</div>
+          </form>
+        </div>
+      </section>
+
+      <!-- FRAME 8 — FOOTER (curved scoop · bleeding wordmark · ruler · cursor image trail) -->
+      <footer data-footer style="position:relative;z-index:7;background:var(--accent);color:var(--bg);overflow:hidden;">
+        <!-- Image trail (behind footer content) -->
+        <div data-image-trail aria-hidden="true"
+          style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;">
+          <sc-for list="{{ trailImgs }}" as="t" hint-placeholder-count="13">
+            <img data-trail-img src="{{ t }}" alt=""
+              style="position:absolute;top:0;left:0;width:180px;height:240px;object-fit:cover;opacity:0;pointer-events:none;transform:translate(-9999px,-9999px);will-change:transform,opacity;box-shadow:0 20px 60px rgba(0,0,0,0.3);" />
+          </sc-for>
+        </div>
+        <svg viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true"
+          style="display:block;width:100%;height:clamp(70px,11vw,170px);position:relative;z-index:2;">
+          <path d="M0,0 H1440 V70 C1200,180 960,180 720,90 C480,0 240,0 0,70 Z" fill="#000000"></path>
+        </svg>
+        <div
+          style="padding:clamp(16px,2vw,32px) clamp(20px,5vw,64px) clamp(16px,2vw,26px);position:relative;z-index:2;">
+          <div style="display:grid;grid-template-columns:1fr 1.35fr;gap:28px;align-items:end;">
+            <div style="display:flex;flex-direction:column;gap:clamp(22px,4vh,44px);">
+              <div
+                style="display:flex;flex-direction:column;gap:7px;font-family:var(--font-caption);font-weight:600;font-size:15px;letter-spacing:0.14em;text-transform:uppercase;">
+                <a href="#" style="color:var(--text);">Instagram</a>
+                <a href="#" style="color:var(--text);">TikTok</a>
+                <a href="#" style="color:var(--text);">Pinterest</a>
+              </div>
+              <div style="font-family:var(--font-body);font-size:14px;line-height:1.55;color:var(--text);">
+                For the vibe<br />80+ genres · beta access<br />Est. 2077 // Drip&trade;
+              </div>
+              <div
+                style="font-family:var(--font-body);font-weight:600;font-size:13px;letter-spacing:0.05em;color:var(--text);">
+                &copy; 2077 DRIP, All Rights Reserved</div>
+            </div>
+            <div style="position:relative;min-height:clamp(170px,22vw,300px);">
+              <div onClick="{{ cycleLogo }}" title="Click to cycle colour"
+                style="position:absolute;right:clamp(-28px,-2vw,0px);bottom:clamp(30px,4vw,52px);white-space:nowrap;cursor:pointer;{{ footerWordStyle }}">
+                Drip</div>
+            </div>
+          </div>
+          <div
+            style="margin-top:clamp(18px,3vw,34px);border-top:1px solid var(--bg);display:flex;justify-content:space-between;padding-top:10px;">
+            <sc-for list="{{ rulerTicks }}" as="r" hint-placeholder-count="13">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--bg);">{{ r }}</span>
+                <span style="width:1px;height:8px;background:var(--bg);"></span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </x-dc>
+  <script type="text/x-dc" data-dc-script
+    data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;}}">
+class Component extends DCLogic {
+  state = {
+    phase: 'loading', loadPct: 0,
+    openFaq: 0, activeFeature: 0, activeLogo: 0,
+    email: '', emailStatus: 'idle',
+  };
+
+  // ============================================================
+  // IMAGES — swap any URL below to replace that image on the page.
+  //   GENRE_IMGS  → the 15 genre-grid tiles (Frame 4)
+  //   FEATURES    → the "wear the app" phone screens (Frame 5)
+  //   FAQ_IMGS    → the FAQ preview panel (Frame 6, one per question)
+  //   trailImgs   → cursor image-trail in the footer (Frame 8)
+  //   hero/*.jpg  → assets/hero/*.jpg on disk (kept for reference)
+  // ============================================================
+  GENRE_IMGS = [
+    'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1445205170230-053b83016050?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1516726817505-f5ed825624d8?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1479064555552-3ef4979f8908?w=500&q=70&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&q=70&auto=format&fit=crop',
+  ];
+  GENRES = ['Streetwear','Y2K','Grunge','Minimal','Techwear','Vintage','Cottagecore','Preppy','Baddie','Skater','Coquette','Old Money','Punk','Athleisure','Avant-Garde'];
+
+  FEATURES = [
+    { n:1, name:'Scroll', img:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=700&q=75&auto=format&fit=crop', desc:'The algorithm decides the fits. An endless feed of looks tuned to your taste.', tagline:'ADDICTIVE AS REELS · LESS ADS' },
+    { n:2, name:'Studio', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&q=75&auto=format&fit=crop', desc:'Make your own fits. Dress-to-impress energy — drag, layer, style, drop.', tagline:'BUILD THE FIT' },
+    { n:3, name:'Colour Theory', img:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=700&q=75&auto=format&fit=crop', desc:'Find the colours that actually go with you. Your palette, decoded.', tagline:'YOUR PALETTE' },
+    { n:4, name:'Wardrobe', img:'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=700&q=75&auto=format&fit=crop', desc:'Snap your clothes into a digital wardrobe. Reuse pieces to build fits and save what you love.', tagline:'FROM YOUR CLOSET' },
+    { n:5, name:'Social', img:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=700&q=75&auto=format&fit=crop', desc:'Private & public accounts, OOTD stories, customizable profiles, and other people\u2019s style to explore.', tagline:'YOUR STYLE, SOCIAL' },
+  ];
+
+  FAQS = [
+    { q:'What is Drip?', a:'Drip is a fashion-first social app. The core content is the complete outfit — the "fit". Discover fits, follow people by their style, post your own looks, build a wardrobe and get AI styling from Taylor.' },
+    { q:'How is it different from Instagram or Pinterest?', a:'On Drip the outfit is the unit. It\u2019s addictive like Reels, aesthetic like Pinterest, but built entirely around fashion taste as identity — with far fewer ads.' },
+    { q:'Who is Taylor?', a:'Taylor is Drip\u2019s built-in AI stylist. Get outfit ideas, colour advice and fit feedback based on your wardrobe and your taste.' },
+    { q:'How does the wardrobe work?', a:'Upload photos of clothes you own and Drip turns them into a digital wardrobe. Those items can be reused to create new fits or saved for later.' },
+    { q:'When does it launch?', a:'We\u2019re in beta. Join the waitlist and you\u2019ll be first to know the second Drip drops on the App Store and Google Play.' },
+    { q:'Is it free?', a:'Early access is free for waitlist members. Pull up, get in early, and help shape the drop.' },
+  ];
+
+  LOGO_STATES = [
+    { name:'Bone', ink:'#DED8CC' },
+    { name:'Ink', ink:'#0E1018' },
+    { name:'Cream', ink:'#E8DFC8' },
+    { name:'Future Cyan', ink:'#48C8FF' },
+    { name:'Deep Cobalt', ink:'#0B1F44' },
+  ];
+
+  componentDidMount() {
+    this._reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (this._reduce) {
+      this.setState({ loadPct: 100, phase: 'site' });
+    } else {
+      this._li = setInterval(() => {
+        this.setState(s => {
+          const n = Math.min(100, s.loadPct + 2.0 + Math.random() * 1.5);
+          if (n >= 100) {
+            clearInterval(this._li);
+            this._li = null;
+            setTimeout(() => this.setState({ phase: 'site' }), 220);
+          }
+          return { loadPct: n };
+        });
+      }, 25);
+    }
+    requestAnimationFrame(() => { this._setupKineticLoader(); this._setupReveal(); this._setupCursor(); this._setupHeroScroll(); this._setupSmoothScroll(); this._setupHeroTilt(); this._setupHeroSwarm(); this._setupHeroCopyIn(); this._setupGenreGrid(); this._setupFeatureGridScroll(); this._setupFaqPopIn(); this._setupImageTrail(); this._setupMenuOverlay(); });
+    const dbg = document.getElementById('__dripVideoDebug');
+    if (dbg) dbg.remove();
+  }
+
+  _setupMenuOverlay() {
+    const btn = document.querySelector('[data-menu-toggle]');
+    const overlay = document.querySelector('[data-menu-overlay]');
+    const label = document.querySelector('[data-menu-label]');
+    const backdrop = document.querySelector('[data-menu-backdrop]');
+    if (!btn || !overlay || btn.__wired) return;
+    btn.__wired = true;
+
+    const toggleMenu = (forceState) => {
+      const isOpened = forceState !== undefined ? forceState : !overlay.hasAttribute('data-menu-open');
+      if (isOpened) {
+        overlay.setAttribute('data-menu-open', 'true');
+        if (label) label.textContent = 'Close';
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        overlay.removeAttribute('data-menu-open');
+        if (label) label.textContent = 'Menu';
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    };
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    const links = Array.from(overlay.querySelectorAll('[data-menu-link]'));
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          toggleMenu(false);
+          const targetEl = document.querySelector(href);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    window.addEventListener('click', (e) => {
+      if (overlay.hasAttribute('data-menu-open') && !overlay.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+        toggleMenu(false);
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.hasAttribute('data-menu-open')) {
+        toggleMenu(false);
+      }
+    });
+  }
+
+  _setupKineticLoader() {
+    const grid = document.querySelector('[data-kinetic-grid]');
+    if (!grid || grid.__built) return;
+    grid.__built = true;
+
+    const phrases = [
+      'THE INTERNET HAS A NEW DRESS CODE',
+      'ESTABLISHED IN THE FUTURE',
+      'FOR THE VIBE'
+    ];
+    const ROW_COUNT = 5;
+    const CENTER_ROW = 2;
+    const COPIES_PER_ROW = 3;
+    const CENTER_COL = 1;
+
+    const rows = [];
+    for (let r = 0; r < ROW_COUNT; r++) {
+      const row = document.createElement('div');
+      row.setAttribute('data-kinetic-row', String(r));
+      const rowIsCenter = r === CENTER_ROW;
+      row.style.cssText = 'display:flex;gap:clamp(24px,4vw,56px);white-space:nowrap;justify-content:center;align-items:center;transform:translateX(0);transition:transform 450ms var(--ease-editorial);will-change:transform;';
+      for (let c = 0; c < COPIES_PER_ROW; c++) {
+        const span = document.createElement('span');
+        span.setAttribute('data-kinetic-word', '');
+        span.setAttribute('data-row-i', String(r));
+        span.setAttribute('data-col-i', String(c));
+        const isCenterWord = rowIsCenter && c === CENTER_COL;
+        const size = isCenterWord ? 'clamp(28px,5.4vw,74px)' : 'clamp(22px,4.4vw,58px)';
+        const solidCream = isCenterWord;
+        const outlineOnly = !isCenterWord;
+        span.style.cssText =
+          'font-family:var(--font-display),Impact,Bungee,sans-serif;font-weight:700;font-size:' + size +
+          ';letter-spacing:0.02em;line-height:1;display:inline-block;transition:clip-path 320ms var(--ease-editorial),opacity 260ms var(--ease-editorial);clip-path:inset(0 0 0 0);' +
+          (solidCream ? 'color:var(--text);' : (outlineOnly ? 'color:transparent;-webkit-text-stroke:1px rgba(232,223,200,0.75);' : 'color:var(--text);'));
+        span.textContent = phrases[0];
+        row.appendChild(span);
+      }
+      grid.appendChild(row);
+      rows.push(row);
+    }
+
+    let phraseIdx = 0;
+    const advance = () => {
+      const nextIdx = (phraseIdx + 1) % phrases.length;
+      const words = grid.querySelectorAll('[data-kinetic-word]');
+      words.forEach((w) => {
+        const isCenter = w.getAttribute('data-row-i') === String(CENTER_ROW) && w.getAttribute('data-col-i') === String(CENTER_COL);
+        if (isCenter) return;
+        const colI = parseInt(w.getAttribute('data-col-i'), 10);
+        const wipeLTR = colI % 2 === 0;
+        w.style.clipPath = wipeLTR ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)';
+      });
+      grid.style.transform = 'scale(1.05)';
+      rows.forEach((r, i) => {
+        const dir = i % 2 === 0 ? 1 : -1;
+        const amp = 36 + Math.abs(i - CENTER_ROW) * 24;
+        r.style.transform = 'translateX(' + (dir * amp) + 'px)';
+      });
+      setTimeout(() => {
+        words.forEach((w) => { w.textContent = phrases[nextIdx]; });
+        setTimeout(() => {
+          grid.style.transform = 'scale(1)';
+          rows.forEach((r) => { r.style.transform = 'translateX(0)'; });
+          words.forEach((w) => { w.style.clipPath = 'inset(0 0 0 0)'; });
+        }, 40);
+      }, 320);
+      phraseIdx = nextIdx;
+    };
+    grid.style.transition = 'transform 450ms var(--ease-editorial)';
+    this._kineticInt = setInterval(advance, 600);
+  }
+
+  _setupHeroSwarm() {
+    if (!this.rootEl) return;
+    const host = this.rootEl.querySelector('[data-hero-swarm]');
+    if (!host || host.__wired) return;
+    host.__wired = true;
+    // Dispatch a load event; the module script below will handle mounting three.js.
+    window.dispatchEvent(new CustomEvent('drip:heroSwarmReady', { detail: { host } }));
+  }
+
+  _setupHeroCopyIn() {
+    if (!this.rootEl) return;
+    const copy = this.rootEl.querySelector('[data-hero-copy]');
+    if (!copy) return;
+    // Kick the reveal one frame after mount so the transitions apply.
+    setTimeout(() => copy.setAttribute('data-hero-in', 'true'), 240);
+  }
+
+  _setupFeatureGridScroll() {
+    if (!this.rootEl) return;
+    const grid = this.rootEl.querySelector('[data-genre-grid]');
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll('[data-genre-card]'));
+    if (!cards.length) return;
+
+    cards.forEach((c, i) => {
+      c.style.opacity = '0';
+      c.style.transform = 'translate3d(0, 34px, 0) scale(0.94)';
+      c.style.transition = 'opacity 700ms var(--ease-editorial), transform 700ms var(--ease-editorial), box-shadow 320ms var(--ease-editorial), border-color 220ms var(--ease-editorial)';
+      c.style.transitionDelay = (i * 55) + 'ms';
+    });
+    if (!('IntersectionObserver' in window) || this._reduce) {
+      cards.forEach(c => { c.style.opacity = '1'; c.style.transform = 'none'; });
+      return;
+    }
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'none';
+        obs.unobserve(e.target);
+      });
+    }, { threshold: 0.18 });
+    cards.forEach(c => io.observe(c));
+    this._genrePopIo = io;
+  }
+
+  _setupFaqPopIn() {
+    if (!this.rootEl) return;
+    const box = this.rootEl.querySelector('[data-faq-image-box]');
+    if (!box || box.__wired) return;
+    box.__wired = true;
+    const rerun = (img) => {
+      if (!img) return;
+      img.style.animation = 'none';
+      // force reflow so the animation restarts on the next assignment
+      void img.offsetWidth;
+      img.style.animation = '';
+    };
+    const mo = new MutationObserver((records) => {
+      records.forEach((r) => {
+        if (r.type === 'attributes' && r.target.matches && r.target.matches('[data-faq-img]')) {
+          rerun(r.target);
+        }
+      });
+    });
+    mo.observe(box, { attributes: true, attributeFilter: ['src'], subtree: true });
+    this._faqMo = mo;
+  }
+
+  _setupImageTrail() {
+    if (!this.rootEl) return;
+    const footer = this.rootEl.querySelector('[data-footer]');
+    if (!footer) return;
+    const box = footer.querySelector('[data-image-trail]');
+    if (!box || box.__wired) return;
+    box.__wired = true;
+    const imgs = Array.from(box.querySelectorAll('[data-trail-img]'));
+    if (!imgs.length) return;
+
+    const IMG_W = 180, IMG_H = 240;
+    const THRESHOLD = 90;
+    const FADE = 900;
+    const ease = 'cubic-bezier(0.22,1,0.36,1)';
+    let last = { x: -9999, y: -9999 };
+    let idx = -1;
+    let z = 1;
+
+    const showNext = (x, y, cachedX, cachedY) => {
+      z += 1;
+      idx = (idx + 1) % imgs.length;
+      const img = imgs[idx];
+      img.style.transition = 'none';
+      img.style.zIndex = String(z);
+      img.style.opacity = '1';
+      img.style.transform = `translate(${cachedX - IMG_W/2}px, ${cachedY - IMG_H/2}px) scale(1)`;
+      void img.offsetWidth;
+      img.style.transition = `transform 400ms ${ease}`;
+      img.style.transform = `translate(${x - IMG_W/2}px, ${y - IMG_H/2}px) scale(1)`;
+      setTimeout(() => {
+        img.style.transition = `opacity ${FADE}ms ${ease}, transform ${FADE}ms ${ease}`;
+        img.style.opacity = '0';
+        img.style.transform = `translate(${x - IMG_W/2}px, ${y - IMG_H/2}px) scale(0.25)`;
+      }, 380);
+    };
+
+    let cache = { x: 0, y: 0 };
+    let hasCache = false;
+    this._onFooterMove = (e) => {
+      const r = footer.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      if (!hasCache) { cache = { x, y }; hasCache = true; }
+      cache.x = cache.x + (x - cache.x) * 0.35;
+      cache.y = cache.y + (y - cache.y) * 0.35;
+      const dx = x - last.x, dy = y - last.y;
+      if (Math.hypot(dx, dy) < THRESHOLD) return;
+      last = { x, y };
+      showNext(x, y, cache.x, cache.y);
+    };
+    footer.addEventListener('pointermove', this._onFooterMove);
+    footer.addEventListener('pointerleave', () => { hasCache = false; last = { x: -9999, y: -9999 }; });
+  }
+
+  _setupGenreGrid() {
+    if (!this.rootEl) return;
+    const grid = this.rootEl.querySelector('[data-genre-grid]');
+    if (!grid || grid.__wired) return;
+    grid.__wired = true;
+    const COLS = 5;
+    const LEAVE_DELAY = 180;
+    let leaveTimer = null;
+    let hovered = null;
+
+    const cards = () => Array.from(grid.querySelectorAll('[data-genre-card]'));
+
+    const apply = () => {
+      const list = cards();
+      if (hovered == null) {
+        list.forEach(c => c.removeAttribute('data-state'));
+        return;
+      }
+      const N = list.length;
+      const neighbours = new Set();
+      if (hovered % COLS !== 0) neighbours.add(hovered - 1);
+      if (hovered % COLS !== COLS - 1) neighbours.add(hovered + 1);
+      neighbours.add(hovered - COLS);
+      neighbours.add(hovered + COLS);
+      list.forEach((c, i) => {
+        if (i === hovered) c.setAttribute('data-state', 'big');
+        else if (neighbours.has(i) && i >= 0 && i < N) c.setAttribute('data-state', 'small');
+        else c.removeAttribute('data-state');
+      });
+    };
+
+    const onEnter = (idx) => {
+      if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
+      hovered = idx;
+      apply();
+    };
+    const onLeave = () => {
+      if (leaveTimer) clearTimeout(leaveTimer);
+      leaveTimer = setTimeout(() => { hovered = null; apply(); }, LEAVE_DELAY);
+    };
+
+    cards().forEach((c, i) => {
+      c.addEventListener('pointerenter', () => onEnter(i));
+    });
+    grid.addEventListener('pointerleave', onLeave);
+    this._genreGridCleanup = () => {
+      if (leaveTimer) clearTimeout(leaveTimer);
+    };
+  }
+
+  // (hero plate mask removed — replaced by the particle swarm)
+
+  _setupSmoothScroll() {
+    if (this._reduce) return;
+    if (typeof window.Lenis !== 'function' || window.__dripLenis) return;
+    const lenis = new window.Lenis({ duration: 1.15, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true, smoothTouch: false });
+    window.__dripLenis = lenis;
+    const raf = (time) => { lenis.raf(time); this._lenisRaf = requestAnimationFrame(raf); };
+    this._lenisRaf = requestAnimationFrame(raf);
+  }
+
+  _setupHeroTilt() {
+    // Cursor parallax is now handled by the three.js swarm's own pointer input.
+  }
+
+  _setupReveal() {
+    if (!this.rootEl) return;
+    const els = this.rootEl.querySelectorAll('[data-reveal]');
+    const show = el => { el.style.opacity = '1'; el.style.transform = 'none'; el.style.filter = 'none'; };
+    if (!('IntersectionObserver' in window) || this._reduce) { els.forEach(show); return; }
+    const io = new IntersectionObserver((ents) => {
+      ents.forEach(e => { if (e.isIntersecting) { const d = parseFloat(e.target.getAttribute('data-delay') || '0'); setTimeout(() => show(e.target), d); io.unobserve(e.target); } });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(el => io.observe(el));
+    this._io = io;
+  }
+
+  _setupCursor() {
+    if (this._reduce || !this.rootEl) return;
+    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+    const layers = Array.from(this.rootEl.querySelectorAll('[data-parallax]'));
+    if (!layers.length) return;
+    let tx = 0, ty = 0, cx = 0, cy = 0;
+    this._onMove = (e) => { tx = (e.clientX / window.innerWidth - 0.5); ty = (e.clientY / window.innerHeight - 0.5); };
+    window.addEventListener('mousemove', this._onMove);
+    const raf = () => {
+      cx += (tx - cx) * 0.06; cy += (ty - cy) * 0.06;
+      layers.forEach(l => { const m = parseFloat(l.getAttribute('data-parallax') || '0'); l.style.transform = `translate3d(${cx * m * 140}px,${cy * m * 140}px,0)`; });
+      this._raf = requestAnimationFrame(raf);
+    };
+    raf();
+  }
+
+  _setupHeroScroll() {
+    if (!this.rootEl) return;
+    const hero = this.rootEl.querySelector('[data-hero]');
+    if (!hero) return;
+    const copy = hero.querySelector('[data-hero-copy]');
+    const swarm = hero.querySelector('[data-hero-swarm]');
+    const veil = hero.querySelector('[data-hero-red-veil]');
+    this._onScroll = () => {
+      const y = window.scrollY || document.documentElement.scrollTop || 0;
+      const vh = Math.max(1, window.innerHeight);
+      const t = Math.min(1, Math.max(0, y / vh));
+      const f = Math.max(0, 1 - t * 1.15);
+      hero.style.opacity = String(f);
+      if (!this._reduce) hero.style.transform = `translateY(${y * 0.18}px)`;
+      if (copy) {
+        copy.style.opacity = String(Math.max(0, 1 - t * 1.6));
+        copy.style.filter = `blur(${(t * 6).toFixed(2)}px)`;
+        copy.style.transform = `translateY(calc(-50% + ${(-t * 60).toFixed(1)}px))`;
+      }
+      if (swarm) {
+        swarm.style.opacity = String(Math.max(0, 1 - t * 1.3));
+        swarm.style.filter = `saturate(${(1 + t * 1.6).toFixed(2)}) hue-rotate(${(t * -20).toFixed(1)}deg)`;
+      }
+      if (veil) {
+        veil.style.opacity = String(Math.min(1, t * 1.6));
+      }
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._onScroll();
+  }
+
+  componentWillUnmount() {
+    if (this._li) clearInterval(this._li);
+    if (this._kineticInt) clearInterval(this._kineticInt);
+    if (this._genreGridCleanup) this._genreGridCleanup();
+    if (this._onFooterMove && this.rootEl) {
+      const f = this.rootEl.querySelector('[data-footer]');
+      if (f) f.removeEventListener('pointermove', this._onFooterMove);
+    }
+    if (this._raf) cancelAnimationFrame(this._raf);
+    if (this._tiltRaf) cancelAnimationFrame(this._tiltRaf);
+    if (this._lenisRaf) cancelAnimationFrame(this._lenisRaf);
+    if (this._io) this._io.disconnect();
+    if (this._genrePopIo) this._genrePopIo.disconnect();
+    if (this._onMove) window.removeEventListener('mousemove', this._onMove);
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+    if (this._onHeroMove) window.removeEventListener('mousemove', this._onHeroMove);
+    const heroEl = this.rootEl ? this.rootEl.querySelector('[data-hero]') : null;
+    if (heroEl && this._onHeroLeave) heroEl.removeEventListener('mouseleave', this._onHeroLeave);
+    if (window.__dripLenis) { try { window.__dripLenis.destroy(); } catch (e) {} window.__dripLenis = null; }
+    if (window.__dripSwarmStop) { try { window.__dripSwarmStop(); } catch (e) {} window.__dripSwarmStop = null; }
+  }
+
+  renderVals() {
+    const s = this.state;
+    const setRoot = (el) => { if (el) this.rootEl = el; };
+
+    const transitionSrc = [
+      ['Your', false], ['taste', false], ['is', false], ['your', false], ['IDENTITY.', true], ['Wear', false], ['it', false], ['loud.', false],
+    ];
+    const transitionWords = transitionSrc.map(([text, accent], i) => ({
+      text: text + ' ', delay: i * 80,
+      style: `display:inline-block;opacity:0;transform:translateY(40px);transition:opacity 700ms var(--ease-editorial),transform 700ms var(--ease-editorial);color:${accent ? '#000000' : 'var(--text)'};${accent ? 'font-weight:700;letter-spacing:-0.005em;' : ''}`,
+    }));
+
+    const pillars = [
+      { n: '01', label: 'Discover' }, { n: '02', label: 'Follow' }, { n: '03', label: 'Post OOTD' }, { n: '04', label: 'Style · Taylor' },
+    ];
+
+    const tickerA = ['For the vibe','Estd 2077','Drip','Fashion is identity','For the vibe','Estd 2077','Drip','Fashion is identity','For the vibe'];
+    const tickerB = ['Pull up','Beta access','Drip','Made for the fit','Pull up','Beta access','Drip','Made for the fit','Pull up'];
+
+    const genreCards = this.GENRES.map((label, i) => ({
+      i,
+      label,
+      img: this.GENRE_IMGS[i % this.GENRE_IMGS.length],
+      code: String((i + 1) * 7).padStart(3, '0'),
+    }));
+
+    const trailImgs = [
+      'assets/trail/trail-03.jpg','assets/trail/trail-04.jpg','assets/trail/trail-05.jpg',
+      'assets/trail/trail-06.jpg','assets/trail/trail-07.jpg','assets/trail/trail-08.jpg',
+      'assets/trail/trail-09.jpg','assets/trail/trail-10.jpg','assets/trail/trail-11.jpg',
+      'assets/trail/trail-12.jpg','assets/trail/trail-13.jpg','assets/trail/trail-14.jpg',
+      'assets/trail/trail-15.jpg',
+    ];
+
+    const features = this.FEATURES.map((f, i) => {
+      const active = s.activeFeature === i;
+      return {
+        ...f, i, active,
+        onActivate: () => this.setState({ activeFeature: i }),
+        wrapStyle: `position:relative;flex:${active ? '4' : '1'} 1 0;min-width:0;height:min(84vh,820px);overflow:hidden;cursor:pointer;transition:flex 700ms var(--ease-editorial);background:var(--slate);border:1px solid ${active ? 'var(--accent)' : 'var(--slate)'};`,
+        phoneStyle: active
+          ? `position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(70%,320px);height:86%;max-height:700px;overflow:hidden;border:6px solid var(--bg);box-shadow:0 30px 70px -20px rgba(0,0,0,0.6);`
+          : `position:absolute;inset:0;overflow:hidden;`,
+        contentStyle: `position:absolute;left:0;right:0;bottom:0;z-index:2;opacity:${active ? '1' : '0'};transform:translateY(${active ? '0' : '20px'});transition:opacity 500ms var(--ease-editorial) ${active ? '160ms' : '0ms'},transform 500ms var(--ease-editorial);pointer-events:none;`,
+        spineStyle: `position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:2;font-family:var(--font-display);font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text);opacity:${active ? '0' : '1'};transition:opacity 300ms var(--ease-editorial);writing-mode:vertical-rl;`,
+      };
+    });
+
+    const FAQ_IMGS = [
+      { img:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=75&auto=format&fit=crop', label:'The fit' },
+      { img:'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=75&auto=format&fit=crop', label:'The feed' },
+      { img:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=75&auto=format&fit=crop', label:'Meet Taylor' },
+      { img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=75&auto=format&fit=crop', label:'Wardrobe' },
+      { img:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=75&auto=format&fit=crop', label:'Launch' },
+      { img:'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=75&auto=format&fit=crop', label:'Free beta' },
+    ];
+    const fi = s.openFaq == null ? 0 : s.openFaq;
+    const faqImage = FAQ_IMGS[fi].img;
+    const faqImageLabel = FAQ_IMGS[fi].label;
+
+    const faqs = this.FAQS.map((q, i) => {
+      const open = s.openFaq === i;
+      return {
+        ...q, n: String(i + 1).padStart(2, '0'),
+        onToggle: () => this.setState(p => ({ openFaq: p.openFaq === i ? null : i })),
+        iconStyle: `font-family:var(--font-display);font-size:26px;color:var(--accent);transition:transform 400ms var(--ease-editorial);transform:rotate(${open ? '135deg' : '0deg'});display:inline-block;flex:0 0 auto;`,
+        answerStyle: `overflow:hidden;max-height:${open ? '340px' : '0'};opacity:${open ? '1' : '0'};transition:max-height 500ms var(--ease-editorial),opacity 400ms var(--ease-editorial);`,
+      };
+    });
+
+    const onEmailChange = (e) => this.setState({ email: e.target.value, emailStatus: 'idle' });
+    const onEmailSubmit = (e) => {
+      e.preventDefault();
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.email.trim());
+      this.setState({ emailStatus: ok ? 'success' : 'error' });
+    };
+    const emailMsg = s.emailStatus === 'success' ? "You're on the list — we'll pull up when it drops."
+      : s.emailStatus === 'error' ? 'Enter a valid email to join the drop.' : '';
+    const emailMsgStyle = `min-height:20px;font-family:var(--font-body);font-size:13px;color:${s.emailStatus === 'error' ? 'var(--accent)' : 'var(--secondary)'};`;
+
+    const logo = this.LOGO_STATES[s.activeLogo];
+    const cycleLogo = () => this.setState(p => ({ activeLogo: (p.activeLogo + 1) % this.LOGO_STATES.length }));
+    const footerWordStyle = `font-family:var(--font-wordmark);font-size:clamp(120px,23vw,360px);line-height:0.7;color:${logo.ink};transition:color 500ms var(--ease-editorial);`;
+    const rulerTicks = [];
+    for (let n = -30; n <= 30; n += 5) rulerTicks.push(n);
+
+    return {
+      setRoot,
+      loadNum: String(Math.round(s.loadPct)).padStart(3, '0'),
+      loaderStyle: `transition:opacity 450ms var(--ease-editorial);opacity:${s.phase === 'site' ? '0' : '1'};pointer-events:${s.phase === 'site' ? 'none' : 'auto'};`,
+      barStyle: `height:100%;background:var(--accent);width:${s.loadPct}%;transition:width 200ms var(--ease-editorial);`,
+      transitionWords, pillars, tickerA, tickerB,
+      genreCards, trailImgs,
+      features, faqs, faqImage, faqImageLabel,
+      email: s.email, onEmailChange, onEmailSubmit, emailMsg, emailMsgStyle,
+      cycleLogo, footerName: logo.name, footerWordStyle, rulerTicks,
+    };
+  }
+}
+</script>
+
+
+  <!-- WebGL1 "Metaballs" Shader Background (Paper Shaders: https://shaders.paper.design/metaballs, Apache-2.0) -->
+  <script>
+    (function () {
+      if (window.__dripMetaballsBooted) return;
+      window.__dripMetaballsBooted = true;
+
+      const waitFor = (sel) => new Promise((resolve) => {
+        const check = () => {
+          const el = document.querySelector(sel);
+          if (el && el.getBoundingClientRect().width > 20) return resolve(el);
+          requestAnimationFrame(check);
+        };
+        check();
+      });
+
+      const initMetaballs = (canvas) => {
+        if (!canvas || canvas.__metaballsMounted) return;
+        canvas.__metaballsMounted = true;
+
+        const gl = canvas.getContext('webgl', {
+          antialias: false,
+          alpha: false,
+          depth: false,
+          stencil: false,
+          powerPreference: 'high-performance'
+        }) || canvas.getContext('experimental-webgl');
+
+        if (!gl) {
+          console.warn('WebGL1 not supported for Metaballs background.');
+          return;
+        }
+
+        const vsSource = `
+          attribute vec2 a_position;
+          void main() {
+            gl_Position = vec4(a_position, 0.0, 1.0);
+          }
+        `;
+
+        const fsSource = `
+// "Metaballs" — made with the 21st.dev Shader Builder
+// Adapted from Paper Shaders: https://shaders.paper.design/metaballs
+// Licensed under Apache-2.0: https://github.com/paper-design/shaders
+// Packed WebGL1 uniforms (the shader exposes readable u_* aliases as macros):
+//   u_colors[8] (first 4 used)
+//   vec3(0.031, 0.031, 0.039)
+//   vec3(0.043, 0.376, 0.396)
+//   vec3(0.318, 0.941, 0.847)
+//   vec3(0.796, 0.992, 0.847)
+//   u_scene = vec4(canvas width, canvas height, seconds * 0.57, 4.0)
+//   u_shape = vec4(1.26, 0.35, 0.28, 0.00)
+//   u_surface = vec4(1.82, 1.04, 0.00, 1.00)
+//   u_finish = vec4(0.00, 0.00, 0.004, 0.04)
+//   u_transform = vec4(6515.0, 0.00, 0.00, 1.0)
+//   u_space = vec4(0.00, 0.00, pointer x, pointer y)
+//   u_cursor = vec4(presence, 2.0, 0.65, 0.46)
+
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+
+uniform vec3 u_colors[8];
+// Seven packed vectors + eight colour vectors = 15 fragment uniform vectors,
+// one below WebGL1's guaranteed minimum. Macros preserve the public u_* API.
+uniform vec4 u_scene;      // resolution.xy, time, colour count
+uniform vec4 u_shape;      // scale, intensity, paramA, warp
+uniform vec4 u_surface;    // detail, contrast, brightness, saturation
+uniform vec4 u_finish;     // hue, vignette, blur, grain
+uniform vec4 u_transform;  // seed, rotation, drift, OKLab toggle
+uniform vec4 u_space;      // offset.xy, pointer.xy
+uniform vec4 u_cursor;
+
+#define u_resolution u_scene.xy
+#define u_time u_scene.z
+#define u_colorCount u_scene.w
+#define u_scale u_shape.x
+#define u_intensity u_shape.y
+#define u_paramA u_shape.z
+#define u_warp u_shape.w
+#define u_detail u_surface.x
+#define u_contrast u_surface.y
+#define u_brightness u_surface.z
+#define u_saturation u_surface.w
+#define u_hue u_finish.x
+#define u_vignette u_finish.y
+#define u_blur u_finish.z
+#define u_grain u_finish.w
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+#define u_seed u_transform.x
+#else
+// Keep hash inputs inside mediump's guaranteed ±2^14 range.
+#define u_seed mod(u_transform.x, 31.0)
+#endif
+#define u_rotate u_transform.y
+#define u_drift u_transform.z
+#define u_oklab u_transform.w
+#define u_offset u_space.xy
+#define u_mouse u_space.zw
+#define u_cursorPresence u_cursor.x
+#define u_cursorEffect u_cursor.y
+#define u_cursorStrength u_cursor.z
+#define u_cursorRadius u_cursor.w
+
+float hash21(vec2 p) {
+#ifndef GL_FRAGMENT_PRECISION_HIGH
+  p = mod(p, 31.0);
+#endif
+  p = fract(p * vec2(234.34, 435.345));
+  p += dot(p, p + 34.23);
+  return fract(p.x * p.y);
+}
+
+// Even, un-structured white noise for film grain (Dave Hoskins hash12). The
+// multiply hash above is fine for value noise but shows a faint axis-aligned
+// mesh at integer fragment coords, which reads as a net over flat areas.
+float grainHash(vec2 p) {
+  vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+  p3 += dot(p3, p3.yzx + 33.33);
+  return fract((p3.x + p3.y) * p3.z);
+}
+
+vec2 hash22(vec2 p) {
+#ifndef GL_FRAGMENT_PRECISION_HIGH
+  p = mod(p, 31.0);
+#endif
+  float n = sin(dot(p, vec2(41.0, 289.0)));
+  return fract(vec2(15731.743, 7892.321) * n);
+}
+
+float noise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(
+    mix(hash21(i), hash21(i + vec2(1.0, 0.0)), u.x),
+    mix(hash21(i + vec2(0.0, 1.0)), hash21(i + vec2(1.0, 1.0)), u.x),
+    u.y);
+}
+
+float fbm(vec2 p) {
+  float v = 0.0;
+  float a = 0.5;
+  for (int i = 0; i < 5; i++) {
+    v += a * noise(p);
+    p = p * 2.03 + vec2(17.0, 9.2);
+    a *= 0.5;
+  }
+  return v;
+}
+
+// --- OKLab colour mixing (perceptual), gated by u_oklab -----------------------
+vec3 srgbToLinear(vec3 c) {
+  return mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)),
+    step(0.04045, c));
+}
+vec3 linearToSrgb(vec3 c) {
+  // max() guards the sRGB branch: out-of-gamut OKLab interpolations can send a
+  // channel negative, and pow(negative, …) is NaN which mix()/step() would
+  // then propagate. The linear branch clips such channels to 0 downstream.
+  return mix(c * 12.92, 1.055 * pow(max(c, vec3(0.0)), vec3(1.0 / 2.4)) - 0.055,
+    step(0.0031308, c));
+}
+vec3 linToOklab(vec3 c) {
+  float l = 0.4122214708 * c.r + 0.5363325363 * c.g + 0.0514459929 * c.b;
+  float m = 0.2119034982 * c.r + 0.6806995451 * c.g + 0.1073969566 * c.b;
+  float s = 0.0883024619 * c.r + 0.2817188376 * c.g + 0.6299787005 * c.b;
+  l = pow(max(l, 0.0), 1.0 / 3.0);
+  m = pow(max(m, 0.0), 1.0 / 3.0);
+  s = pow(max(s, 0.0), 1.0 / 3.0);
+  return vec3(
+    0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+    1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
+    0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s);
+}
+vec3 oklabToLin(vec3 c) {
+  float l = c.x + 0.3963377774 * c.y + 0.2158037573 * c.z;
+  float m = c.x - 0.1055613458 * c.y - 0.0638541728 * c.z;
+  float s = c.x - 0.0894841775 * c.y - 1.2914855480 * c.z;
+  l = l * l * l; m = m * m * m; s = s * s * s;
+  return vec3(
+    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+    -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s);
+}
+vec3 mixColour(vec3 a, vec3 b, float t) {
+  if (u_oklab > 0.5) {
+    vec3 la = linToOklab(srgbToLinear(a));
+    vec3 lb = linToOklab(srgbToLinear(b));
+    return clamp(linearToSrgb(oklabToLin(mix(la, lb, t))), 0.0, 1.0);
+  }
+  return mix(a, b, t);
+}
+
+// Mix through the recipe colours; x is clamped to 0..1. WebGL1 forbids
+// dynamic uniform indexing in fragment shaders, hence the constant loop.
+vec3 palette(float x) {
+  float n = max(u_colorCount - 1.0, 1.0);
+  float f = clamp(x, 0.0, 1.0) * n;
+  vec3 col = u_colors[0];
+  for (int i = 0; i < 7; i++) {
+    if (float(i) < n)
+      col = mixColour(col, u_colors[i + 1],
+        smoothstep(0.0, 1.0, clamp(f - float(i), 0.0, 1.0)));
+  }
+  return col;
+}
+
+vec3 hueRotate(vec3 col, float a) {
+  const mat3 toYIQ = mat3(0.299, 0.596, 0.211,
+                          0.587, -0.274, -0.523,
+                          0.114, -0.322, 0.312);
+  const mat3 toRGB = mat3(1.0, 1.0, 1.0,
+                          0.956, -0.272, -1.106,
+                          0.621, -0.647, 1.703);
+  vec3 yiq = toYIQ * col;
+  float ca = cos(a), sa = sin(a);
+  yiq = vec3(yiq.x, yiq.y * ca - yiq.z * sa, yiq.y * sa + yiq.z * ca);
+  return toRGB * yiq;
+}
+
+vec3 shade(vec2 uv, vec2 p, float t) {
+  float field = 0.0;
+  vec2 aspect = u_resolution.xy / min(u_resolution.x, u_resolution.y);
+  for (int i = 0; i < 9; i++) {
+    float fi = float(i);
+    vec2 center = vec2(sin(t * (0.19 + fi * 0.037) + fi * 2.1 + u_seed),
+                       cos(t * (0.16 + fi * 0.043) + fi * 1.4)) * (0.68 * aspect);
+    field += (0.025 + u_intensity * 0.065) / (dot(p - center, p - center) + 0.006);
+  }
+  float surface = smoothstep(mix(1.8, 0.45, u_paramA), mix(2.3, 0.8, u_paramA), field);
+  return palette(clamp(surface + field * 0.05, 0.0, 1.0));
+}
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+  vec2 screenUv = uv;
+  vec2 p = (gl_FragCoord.xy - 0.5 * u_resolution.xy)
+    / min(u_resolution.x, u_resolution.y);
+  float cursorMask = 0.0;
+
+  // Cursor modes 1–3 are local distortions. Push shifts the same screen-space
+  // coordinates before field transforms, so Zoom/Rotate don't change its feel.
+  if (u_cursorPresence > 0.001) {
+    // u_mouse is normalized to -1..1 in canvas space. Convert it to the same
+    // aspect-corrected screen space as p so effects stay under the cursor.
+    vec2 cursor = (0.5 * u_mouse * u_resolution.xy)
+      / min(u_resolution.x, u_resolution.y);
+    vec2 cursorDelta = p - cursor;
+    if (u_cursorEffect < 0.5) {
+      p += cursor * u_cursorPresence * u_cursorStrength * 0.55;
+    } else {
+      float cursorDistance = length(cursorDelta);
+      vec2 cursorDirection = cursorDelta / max(cursorDistance, 0.0001);
+      cursorMask = u_cursorPresence
+        * (1.0 - smoothstep(0.0, u_cursorRadius, cursorDistance));
+      if (u_cursorEffect < 1.5) {
+        p -= cursorDirection * cursorMask * u_cursorStrength * 0.24;
+      } else if (u_cursorEffect < 2.5) {
+        float cursorAngle = cursorMask * u_cursorStrength * 2.2;
+        float cc = cos(cursorAngle), cs = sin(cursorAngle);
+        p = cursor + mat2(cc, -cs, cs, cc) * cursorDelta;
+      } else if (u_cursorEffect < 3.5) {
+        float ripple = sin(
+          cursorDistance / max(u_cursorRadius, 0.001) * 18.0 - u_time * 5.0);
+        p -= cursorDirection * ripple * cursorMask * u_cursorStrength * 0.07;
+      }
+    }
+  }
+
+  // Keep presets that read uv (rather than p) in the same warped space.
+  uv = p * min(u_resolution.x, u_resolution.y) / u_resolution.xy + 0.5;
+  p *= u_scale;
+  // Field transform: rotate, pan, pointer push, slow drift.
+  if (abs(u_rotate) > 0.0001) {
+    float cr = cos(u_rotate), sr = sin(u_rotate);
+    p = mat2(cr, -sr, sr, cr) * p;
+  }
+  p += u_offset;
+  if (u_drift > 0.0001)
+    p += u_drift * vec2(sin(u_time * 0.31), cos(u_time * 0.23));
+  // Organic domain warp.
+  if (u_warp > 0.0) {
+    p += u_warp * (vec2(
+      fbm(p * u_detail + u_seed),
+      fbm(p * u_detail + vec2(5.2, 1.3))) - 0.5);
+  }
+  // Shade, with an optional soft 5-tap blur.
+  vec3 col;
+  if (u_blur > 0.0) {
+    float e = u_blur;
+    float pe = e * u_scale;
+    vec2 uvE = vec2(e) * min(u_resolution.x, u_resolution.y) / u_resolution.xy;
+    col  = shade(uv, p, u_time) * 0.36;
+    col += shade(uv + vec2(uvE.x, 0.0), p + vec2(pe, 0.0), u_time) * 0.16;
+    col += shade(uv - vec2(uvE.x, 0.0), p - vec2(pe, 0.0), u_time) * 0.16;
+    col += shade(uv + vec2(0.0, uvE.y), p + vec2(0.0, pe), u_time) * 0.16;
+    col += shade(uv - vec2(0.0, uvE.y), p - vec2(0.0, pe), u_time) * 0.16;
+  } else {
+    col = shade(uv, p, u_time);
+  }
+  // Post: contrast, saturation, hue, brightness, vignette, grain.
+  if (abs(u_contrast - 1.0) > 0.0001)
+    col = (col - 0.5) * u_contrast + 0.5;
+  if (abs(u_saturation - 1.0) > 0.0001) {
+    float luma = dot(col, vec3(0.299, 0.587, 0.114));
+    col = mix(vec3(luma), col, u_saturation);
+  }
+  if (abs(u_hue) > 0.0001)
+    col = hueRotate(col, u_hue);
+  if (abs(u_brightness) > 0.0001)
+    col += u_brightness;
+  if (u_vignette > 0.0001) {
+    float vd = length(screenUv - 0.5) * 1.41421356;
+    col *= 1.0 - u_vignette * smoothstep(0.35, 1.0, vd);
+  }
+  if (u_cursorPresence > 0.001 && u_cursorEffect > 3.5)
+    col += (vec3(0.18) + col * 0.12) * cursorMask * u_cursorStrength;
+  if (u_grain > 0.0001)
+    col += (grainHash(
+      gl_FragCoord.xy + vec2(u_seed * 17.0, u_seed * 31.0)) - 0.5) * u_grain;
+  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+}
+`;
+
+        const createShader = (type, source) => {
+          const shader = gl.createShader(type);
+          gl.shaderSource(shader, source);
+          gl.compileShader(shader);
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+            gl.deleteShader(shader);
+            return null;
+          }
+          return shader;
+        };
+
+        const vs = createShader(gl.VERTEX_SHADER, vsSource);
+        const fs = createShader(gl.FRAGMENT_SHADER, fsSource);
+        if (!vs || !fs) return;
+
+        const program = gl.createProgram();
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+          console.error('Program link error:', gl.getProgramInfoLog(program));
+          return;
+        }
+
+        const posAttr = gl.getAttribLocation(program, 'a_position');
+        const posBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+          -1.0, -1.0,
+           3.0, -1.0,
+          -1.0,  3.0
+        ]), gl.STATIC_DRAW);
+
+        const uColorsLoc = gl.getUniformLocation(program, 'u_colors');
+        const uSceneLoc = gl.getUniformLocation(program, 'u_scene');
+        const uShapeLoc = gl.getUniformLocation(program, 'u_shape');
+        const uSurfaceLoc = gl.getUniformLocation(program, 'u_surface');
+        const uFinishLoc = gl.getUniformLocation(program, 'u_finish');
+        const uTransformLoc = gl.getUniformLocation(program, 'u_transform');
+        const uSpaceLoc = gl.getUniformLocation(program, 'u_space');
+        const uCursorLoc = gl.getUniformLocation(program, 'u_cursor');
+
+        // Exact colors (low -> high): #08080A, #0B6065, #51F0D8, #CBFDD8
+        const colorsData = new Float32Array([
+          0.031, 0.031, 0.039,
+          0.043, 0.376, 0.396,
+          0.318, 0.941, 0.847,
+          0.796, 0.992, 0.847,
+          0.0, 0.0, 0.0,
+          0.0, 0.0, 0.0,
+          0.0, 0.0, 0.0,
+          0.0, 0.0, 0.0
+        ]);
+
+        const hero = canvas.closest('#hero') || canvas.parentElement || document.body;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        const resize = () => {
+          const rect = hero.getBoundingClientRect();
+          const targetW = Math.max(1, Math.floor(rect.width * dpr));
+          const targetH = Math.max(1, Math.floor(rect.height * dpr));
+          if (canvas.width !== targetW || canvas.height !== targetH) {
+            canvas.width = targetW;
+            canvas.height = targetH;
+            gl.viewport(0, 0, targetW, targetH);
+          }
+        };
+        resize();
+        window.addEventListener('resize', resize, { passive: true });
+
+        let pointerX = 0.0, pointerY = 0.0;
+        let targetPointerX = 0.0, targetPointerY = 0.0;
+        let presence = 0.0, targetPresence = 0.0;
+
+        const onPointerMove = (e) => {
+          const rect = hero.getBoundingClientRect();
+          if (e.clientX >= rect.left && e.clientX <= rect.right &&
+              e.clientY >= rect.top && e.clientY <= rect.bottom) {
+            targetPointerX = ((e.clientX - rect.left) / rect.width) * 2.0 - 1.0;
+            targetPointerY = 1.0 - ((e.clientY - rect.top) / rect.height) * 2.0;
+            targetPresence = 1.0;
+          } else {
+            targetPresence = 0.0;
+          }
+        };
+        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        hero.addEventListener('pointerleave', () => { targetPresence = 0.0; });
+
+        let startTime = performance.now();
+        let rafId = null;
+
+        const render = (now) => {
+          if (document.hidden) {
+            rafId = null;
+            return;
+          }
+
+          resize();
+
+          const seconds = (now - startTime) * 0.001;
+          presence += (targetPresence - presence) * 0.08;
+          pointerX += (targetPointerX - pointerX) * 0.12;
+          pointerY += (targetPointerY - pointerY) * 0.12;
+
+          gl.useProgram(program);
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+          gl.enableVertexAttribArray(posAttr);
+          gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, false, 0, 0);
+
+          gl.uniform3fv(uColorsLoc, colorsData);
+          // speed 25/100 -> seconds * 0.57, 4 colors
+          gl.uniform4f(uSceneLoc, canvas.width, canvas.height, seconds * 0.57, 4.0);
+          // zoom / scale 1.15, intensity 35/100, paramA 0.28, warp 0/100
+          gl.uniform4f(uShapeLoc, 1.15, 0.35, 0.28, 0.00);
+          // detail 1.82, contrast 49/100 (1.04), brightness 50/100 (0.00), saturation 50/100 (1.00)
+          gl.uniform4f(uSurfaceLoc, 1.82, 1.04, 0.00, 1.00);
+          // hue 0°, vignette 0/100, blur 0.004, grain 12/100 (0.04)
+          gl.uniform4f(uFinishLoc, 0.00, 0.00, 0.004, 0.04);
+          // seed 6515.0, rotation 0, drift 0, OKLab 1.0
+          gl.uniform4f(uTransformLoc, 6515.0, 0.00, 0.00, 1.0);
+          // pointer
+          gl.uniform4f(uSpaceLoc, 0.00, 0.00, pointerX, pointerY);
+          // presence, swirl effect (2.0), strength 65/100 (0.65), radius 50/100 (0.46)
+          gl.uniform4f(uCursorLoc, presence, 2.0, 0.65, 0.46);
+
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+          rafId = requestAnimationFrame(render);
+        };
+
+        rafId = requestAnimationFrame(render);
+
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden && !rafId) {
+            rafId = requestAnimationFrame(render);
+          } else if (document.hidden && rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        });
+      };
+
+      waitFor('[data-hero-metaballs]').then(initMetaballs);
+    })();
+  </script>
+</body>
+
+</html>

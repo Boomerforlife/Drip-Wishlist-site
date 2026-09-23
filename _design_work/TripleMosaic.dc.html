@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Bungee&family=DM+Serif+Display:ital@0;1&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Manrope', system-ui, sans-serif; background: #0E1018; color: #E8DFC8; }
+    a { color: #48C8FF; text-decoration: none; }
+    a:hover { color: #FF2020; }
+    .mono { font-family: 'DM Mono', ui-monospace, Menlo, monospace; letter-spacing: 0.24em; text-transform: uppercase; }
+  </style>
+</helmet>
+<div style="position: relative; width: 1440px; height: 900px; overflow: hidden; background: #0E1018;">
+
+  <!-- 3 vertical bands (each poster ken-burns independently) -->
+  <div style="position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;">
+    <div style="position: relative; overflow: hidden;">
+      <img src="poster-denim.jpg" alt="" style="position: absolute; top: -8%; left: -12%; width: 130%; height: 116%; object-fit: cover; object-position: 50% 40%; display: block; filter: contrast(1.02);">
+    </div>
+    <div style="position: relative; overflow: hidden;">
+      <img src="poster-thermal.jpg" alt="" style="position: absolute; top: -6%; left: -8%; width: 122%; height: 116%; object-fit: cover; object-position: 60% 45%; display: block; filter: contrast(1.02);">
+    </div>
+    <div style="position: relative; overflow: hidden;">
+      <img src="poster-lime.jpg" alt="" style="position: absolute; top: -10%; left: -6%; width: 118%; height: 118%; object-fit: cover; object-position: 40% 55%; display: block; filter: contrast(1.02);">
+    </div>
+  </div>
+
+  <!-- Column dividers (very subtle) -->
+  <div style="position: absolute; top: 0; bottom: 0; left: 33.333%; width: 1px; background: rgba(14,16,24,0.6); z-index: 2;"></div>
+  <div style="position: absolute; top: 0; bottom: 0; left: 66.666%; width: 1px; background: rgba(14,16,24,0.6); z-index: 2;"></div>
+
+  <!-- Composited hero copy overlay (center only, spans middle column) -->
+  <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: center; z-index: 4;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 26px; text-align: center;">
+      <span class="mono" style="font-size: 11px; color: rgba(232,223,200,0.85); background: rgba(14,16,24,0.55); padding: 8px 14px; backdrop-filter: blur(6px);">Three vibes. One tap.</span>
+      <div style="font-family: 'DM Serif Display', serif; font-style: italic; font-size: 220px; line-height: 0.85; color: #E8DFC8; letter-spacing: -0.02em; text-shadow: 0 20px 80px rgba(0,0,0,0.55);">Drip</div>
+      <div style="display: flex; gap: 14px; align-items: center;">
+        <span style="font-family: 'Bungee', 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.14em; color: #0E1018; background: #FF2020; padding: 12px 22px;">Pull Up</span>
+        <span class="mono" style="font-size: 10px; color: rgba(232,223,200,0.9); background: rgba(14,16,24,0.55); padding: 8px 12px; backdrop-filter: blur(6px);">Beta &middot; For the vibe</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav style="position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 22px 44px; z-index: 5;">
+    <div style="font-family: 'DM Serif Display', serif; font-style: italic; font-size: 26px; color: #E8DFC8;">Drip</div>
+    <div style="display: flex; align-items: center; gap: 28px;">
+      <span class="mono" style="font-size: 11px; color: #E8DFC8;">Manifest</span>
+      <span class="mono" style="font-size: 11px; color: #E8DFC8;">Genres</span>
+      <span class="mono" style="font-size: 11px; color: #E8DFC8;">Features</span>
+      <span class="mono" style="font-size: 11px; color: #0E1018; background: #FF2020; padding: 10px 18px; font-family: 'Bungee', 'DM Mono', monospace; letter-spacing: 0.14em;">Pull Up</span>
+    </div>
+  </nav>
+
+  <!-- TOP MICRO-COPY STRIP -->
+  <div style="position: absolute; top: 88px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 44px; z-index: 5;">
+    <span class="mono" style="font-size: 11px; color: #E8DFC8;">The fashion social network</span>
+    <span class="mono" style="font-size: 11px; color: #48C8FF;">ESTD 2077</span>
+  </div>
+
+  <!-- VERTICAL BETA TAG -->
+  <div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); background: #FF2020; color: #0E1018; writing-mode: vertical-rl; font-family: 'Bungee', 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.26em; text-transform: uppercase; padding: 22px 8px; z-index: 5;">Beta &middot; For the vibe</div>
+
+  <!-- BOTTOM SCROLL INDICATOR -->
+  <div style="position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; z-index: 6;">
+    <span class="mono" style="font-size: 11px; color: #E8DFC8; letter-spacing: 0.3em;">Scroll</span>
+    <span style="display: inline-block; width: 36px; height: 1px; background: #E8DFC8;"></span>
+  </div>
+
+  <!-- Direction label -->
+  <div style="position: absolute; bottom: 32px; left: 44px; display: flex; align-items: center; gap: 12px; z-index: 6;">
+    <span style="width: 10px; height: 10px; background: #48C8FF; border-radius: 50%;"></span>
+    <span class="mono" style="font-size: 11px; color: #E8DFC8; letter-spacing: 0.22em;">Direction D &middot; Triple mosaic</span>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

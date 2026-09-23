@@ -1,0 +1,16 @@
+@import url('fonts.css');
+:root{
+--font-wordmark:'Molen Surplus',cursive;
+--font-display:'Michroma',system-ui,sans-serif;
+--font-heading:'Michroma',system-ui,sans-serif;
+--font-alt:'Bungee',system-ui,sans-serif;
+--font-body-lg:'Manrope',sans-serif;
+--font-body:'Manrope',sans-serif;
+--font-caption:'Manrope',sans-serif;
+--font-mono:'DM Mono',monospace;
+--weight-body-lg:500;
+--weight-body:400;
+--weight-caption:600;
+--tracking-wide:0.14em;
+--tracking-caption:0.12em;
+}
