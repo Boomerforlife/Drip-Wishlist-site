@@ -2070,9 +2070,9 @@ class Component extends DCLogic {
 // Packed WebGL1 uniforms (the shader exposes readable u_* aliases as macros):
 //   u_colors[8] (first 4 used)
 //   vec3(0.031, 0.031, 0.039)
-//   vec3(0.043, 0.376, 0.396)
-//   vec3(0.318, 0.941, 0.847)
-//   vec3(0.796, 0.992, 0.847)
+//   vec3(0.350, 0.180, 0.028)
+//   vec3(0.965, 0.506, 0.078)
+//   vec3(1.000, 0.820, 0.480)
 //   u_scene = vec4(canvas width, canvas height, seconds * 0.57, 4.0)
 //   u_shape = vec4(1.26, 0.35, 0.28, 0.00)
 //   u_surface = vec4(1.82, 1.04, 0.00, 1.00)
@@ -2393,12 +2393,12 @@ void main() {
         const uSpaceLoc = gl.getUniformLocation(program, 'u_space');
         const uCursorLoc = gl.getUniformLocation(program, 'u_cursor');
 
-        // Exact colors (low -> high): #08080A, #0B6065, #51F0D8, #CBFDD8
+        // Exact colors (low -> high): #08080A, #5A2E07, #F68114, #FFD17A
         const colorsData = new Float32Array([
           0.031, 0.031, 0.039,
-          0.043, 0.376, 0.396,
-          0.318, 0.941, 0.847,
-          0.796, 0.992, 0.847,
+          0.350, 0.180, 0.028,
+          0.965, 0.506, 0.078,
+          1.000, 0.820, 0.480,
           0.0, 0.0, 0.0,
           0.0, 0.0, 0.0,
           0.0, 0.0, 0.0,
